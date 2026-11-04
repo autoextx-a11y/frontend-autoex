@@ -1,0 +1,479 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * AutoEx design system.
+ * Brand: AutoEx orange (#ff5221), deep orange (#ed4b00), charcoal (#1a1a1a / #222).
+ * Fonts: Montserrat (headings), Open Sans (body).
+ * All colors are oklch tokens; components only use semantic utilities.
+ */
+
+@theme inline {
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-deep: var(--primary-deep);
+  --color-highlight: var(--highlight);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-panel: var(--panel);
+  --color-star: var(--star);
+  --color-link: var(--link);
+  --color-ring-offset-background: var(--background);
+}
+
+:root {
+  --radius: 0.375rem;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.218 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.218 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.218 0 0);
+
+  /* AutoEx orange */
+  --primary: oklch(0.674 0.217 35.5);
+  --primary-foreground: oklch(1 0 0);
+  --primary-deep: oklch(0.636 0.208 38);
+  --highlight: oklch(0.738 0.182 55.3);
+
+  /* Charcoal */
+  --ink: oklch(0.218 0 0);
+  --ink-soft: oklch(0.252 0 0);
+  --ink-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.252 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.52 0 0);
+  --accent: oklch(0.961 0 0);
+  --accent-foreground: oklch(0.218 0 0);
+  --panel: oklch(0.976 0 0);
+  --star: oklch(0.844 0.172 84.9);
+  --link: oklch(0.578 0.228 260);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.898 0 0);
+  --input: oklch(0.898 0 0);
+  --ring: oklch(0.674 0.217 35.5);
+
+  /* Paint swatches for the color filters */
+  --swatch-white: oklch(1 0 0);
+  --swatch-gray: oklch(0.6 0 0);
+  --swatch-black: oklch(0.15 0 0);
+  --swatch-silver: oklch(0.82 0.005 250);
+  --swatch-blue: oklch(0.5 0.17 255);
+  --swatch-red: oklch(0.55 0.21 27);
+  --swatch-yellow: oklch(0.88 0.17 95);
+  --swatch-brown: oklch(0.45 0.07 55);
+  --swatch-orange: oklch(0.7 0.19 45);
+  --swatch-green: oklch(0.55 0.13 150);
+  --swatch-beige: oklch(0.86 0.04 80);
+
+  /* Imagery (hosted on the dealership CDN) */
+  --img-pattern: url("https://cdn.powersports.com/cdn-cgi/image/h=1440,w=1920/C035FC0F43FD4D685EEFB014AF37E357.png");
+  --img-hero: url("https://cdn05.carsforsale.com/598cb4a7f0b43db5e23a6b6b50503015/598cb4a7f0b43db5e23a6b6b50503015.jpg?format=&sig=3c11d07cf57a96ed");
+  --img-parallax: url("https://cdn.powersports.com/cdn-cgi/image/h=1440,w=1920/B2118378E99A8E1C698244B632B59EC6.jpg");
+  --img-footer: url("https://cdn.powersports.com/cdn-cgi/image/h=1440,w=1920/C71696AC4E904F198EA1151FCC23879E.jpg");
+
+  --shadow-header: 0 0 10px oklch(0 0 0 / 0.9);
+  --shadow-card: 1px 7px 11px oklch(0 0 0 / 0.2);
+  --shadow-lift: 0 18px 40px -18px oklch(0.218 0 0 / 0.45);
+  --shadow-glow: 0 10px 30px -10px color-mix(in oklab, var(--primary) 60%, transparent);
+  --header-h: 121px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+}
+
+/* ---------- Layout ---------- */
+@utility container-site {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+  max-width: 1500px;
+  @media (min-width: 576px) {
+    max-width: 540px;
+  }
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
+  @media (min-width: 992px) {
+    max-width: 960px;
+  }
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+  }
+  @media (min-width: 1400px) {
+    max-width: 1320px;
+  }
+  @media (min-width: 1500px) {
+    max-width: 1500px;
+  }
+}
+
+/* ---------- Backgrounds ---------- */
+@utility bg-hero {
+  background-image:
+    linear-gradient(to right, oklch(0.24 0 0 / 0.6), oklch(0.24 0 0 / 0)), var(--img-hero);
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  @media (min-width: 576px) {
+    background-attachment: fixed;
+  }
+}
+
+@utility bg-price-band {
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(180deg, var(--ink), var(--ink), oklch(0.218 0 0 / 0.5)), var(--img-pattern);
+  background-size: contain;
+}
+
+@utility bg-page-title {
+  background-image:
+    linear-gradient(to bottom, oklch(1 0 0 / 0.97) 60%, oklch(1 0 0 / 0.7) 100%), var(--img-pattern);
+  background-size: contain;
+  background-position: center;
+  box-shadow: 0 1px 5px oklch(0 0 0 / 0.3);
+}
+
+@utility bg-parallax {
+  background-image:
+    linear-gradient(180deg, var(--primary), oklch(0 0 0 / 0.5)), var(--img-parallax);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+@utility bg-card-light {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(180deg, oklch(1 0 0), oklch(1 0 0), oklch(1 0 0 / 0.6)), var(--img-pattern);
+  background-size: contain;
+}
+
+@utility bg-card-dark {
+  background-color: var(--ink-soft);
+  background-image:
+    linear-gradient(180deg, var(--ink-soft), var(--ink-soft), oklch(0.252 0 0 / 0.33)), var(--img-pattern);
+  background-size: contain;
+}
+
+@utility bg-footer {
+  background-color: oklch(0 0 0);
+  background-image: var(--img-footer);
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------- Typography helpers ---------- */
+@utility section-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 5px solid oklch(0.934 0 0);
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+@utility underline-accent {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100px;
+    height: 5px;
+    background: var(--primary);
+  }
+}
+
+@utility nav-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 3px;
+    background: var(--highlight);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  &:hover::after,
+  &[data-status="active"]::after {
+    transform: scaleX(1);
+  }
+}
+
+@utility bullet-list {
+  & > li {
+    position: relative;
+    padding-left: 1rem;
+  }
+  & > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--primary);
+  }
+}
+
+@utility fade-bottom {
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+}
+
+/* ---------- Forms ---------- */
+@utility field {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--background);
+  border-radius: 2px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+  }
+  &::placeholder {
+    color: oklch(0.7 0 0);
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shine {
+  from {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+
+@keyframes float-car {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.6s ease both;
+}
+
+@utility animate-slide-left {
+  animation: slide-in-left 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-slide-right {
+  animation: slide-in-right 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-float {
+  animation: float-car 4s ease-in-out infinite;
+}
+
+/* Scroll reveal: hidden until the Reveal component marks it visible */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Button shine sweep */
+@utility btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.35), transparent);
+    transform: translateX(-120%) skewX(-20deg);
+    z-index: -1;
+  }
+  &:hover::after {
+    animation: shine 0.8s ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Range slider (price / mileage / year) */
+@utility range-thumb {
+  pointer-events: none;
+  appearance: none;
+  background: transparent;
+  &::-webkit-slider-thumb {
+    pointer-events: auto;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: var(--background);
+    border: 3px solid var(--primary);
+    cursor: pointer;
+    box-shadow: 0 1px 4px oklch(0 0 0 / 0.25);
+    transition: transform 0.15s ease;
+  }
+  &::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+  &::-moz-range-thumb {
+    pointer-events: auto;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--background);
+    border: 3px solid var(--primary);
+    cursor: pointer;
+  }
+}
