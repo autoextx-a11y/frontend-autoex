@@ -5,9 +5,11 @@ React 19 + TanStack Start (Node server functions) + Tailwind CSS v4.
 ## Run locally
 1. Install Node.js 20+ (or Bun).
 2. `npm install`
-3. `npm run dev` then open http://localhost:8080
-4. Production: `npm run build` then `npm run preview`
-5. Tests: `npm test`
+3. Git pre-commit hooks are configured during install and lint staged JS/TS files before each commit.
+4. `npm run dev` then open http://localhost:8080
+5. Production: `npm run build:production` to remove previous build output and create a fresh build; upload the generated output to SiteGround manually.
+6. Preview: `npm run preview`
+7. Tests: `npm test`
 
 ## Pages (src/routes)
 - `/` Home · `/inventory` Inventory · `/inventory/details/:id` Car details
