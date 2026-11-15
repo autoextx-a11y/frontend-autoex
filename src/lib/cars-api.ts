@@ -1,22 +1,42 @@
-
 const API_URL = import.meta.env["VITE_API_URL"] ?? "http://localhost:5000";
 
 export type ApiCar = {
   id: number;
   vin: string;
+  stockNumber: string | null;
+  dealerId: number;
+
   year: number;
   make: string;
   model: string;
   trim: string | null;
+
+  odometer: number | null;
+  price: number;
+
   interiorColor: string | null;
   exteriorColor: string | null;
-  engine: string | null;
+
   transmission: string | null;
-  driveTrain: string | null;
   bodyStyle: string | null;
+  condition: string | null;
+
+  certified: boolean;
+
+  engine: string | null;
+  driveTrain: string | null;
   fuelType: string | null;
   carfaxUrl: string | null;
-  price: number;
+
+  description: string | null;
+  equipment: string[];
+  photos: string[];
+
+  photosUpdatedAt: string | null;
+  vdpUrl: string | null;
+
+  isActive: boolean;
+  lastSeenAt: string | null;
 };
 
 export type ApiListResponse = {
@@ -40,9 +60,7 @@ export async function fetchCars(
   return res.json();
 }
 
-export async function fetchCarById(
-  id: string | number,
-): Promise<ApiCar | null> {
+export async function fetchCarById(id: string | number): Promise<ApiCar | null> {
   const res = await fetch(`${API_URL}/api/cars/${id}`);
 
   if (res.status === 404) return null;

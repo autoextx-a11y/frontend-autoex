@@ -34,7 +34,12 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
     <>
       <div className={cn("grid gap-2", thumbs.length ? "md:grid-cols-2" : "")}>
         {main && (
-          <button type="button" onClick={() => show(0)} className="group relative block overflow-hidden bg-muted" aria-label="Open photo gallery">
+          <button
+            type="button"
+            onClick={() => show(0)}
+            className="group relative block overflow-hidden bg-muted"
+            aria-label="Open photo gallery"
+          >
             <img
               src={photoUrl(main, "1280x960")}
               alt={alt}
@@ -83,22 +88,45 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
           </DialogTitle>
           <div className="flex items-center justify-between px-4 py-3">
             <p className="font-display font-semibold">
-              {alt} <span className="text-ink-foreground/60">({idx + 1} / {count})</span>
+              {alt}{" "}
+              <span className="text-ink-foreground/60">
+                ({idx + 1} / {count})
+              </span>
             </p>
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close gallery" className="rounded p-1 hover:bg-ink-soft">
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close gallery"
+              className="rounded p-1 hover:bg-ink-soft"
+            >
               <X className="size-6" />
             </button>
           </div>
           <div className="relative">
             {photos[idx] && (
-              <img key={idx} src={photoUrl(photos[idx], "1280x960")} alt={alt} className="animate-fade-in mx-auto max-h-[70vh] w-auto object-contain" />
+              <img
+                key={idx}
+                src={photoUrl(photos[idx], "1280x960")}
+                alt={alt}
+                className="animate-fade-in mx-auto max-h-[70vh] w-auto object-contain"
+              />
             )}
             {count > 1 && (
               <>
-                <button type="button" onClick={() => go(-1)} aria-label="Previous photo" className="absolute left-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-primary transition-transform hover:scale-110">
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  aria-label="Previous photo"
+                  className="absolute left-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-primary transition-transform hover:scale-110"
+                >
                   <ChevronLeft />
                 </button>
-                <button type="button" onClick={() => go(1)} aria-label="Next photo" className="absolute right-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-primary transition-transform hover:scale-110">
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label="Next photo"
+                  className="absolute right-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-primary transition-transform hover:scale-110"
+                >
                   <ChevronRight />
                 </button>
               </>
@@ -111,9 +139,17 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
                 type="button"
                 onClick={() => setIdx(i)}
                 aria-label={`Show photo ${i + 1}`}
-                className={cn("shrink-0 border-2 transition-opacity", i === idx ? "border-primary" : "border-transparent opacity-60 hover:opacity-100")}
+                className={cn(
+                  "shrink-0 border-2 transition-opacity",
+                  i === idx ? "border-primary" : "border-transparent opacity-60 hover:opacity-100",
+                )}
               >
-                <img src={photoUrl(p, "480x360")} alt="" loading="lazy" className="h-16 w-20 object-cover" />
+                <img
+                  src={photoUrl(p, "480x360")}
+                  alt=""
+                  loading="lazy"
+                  className="h-16 w-20 object-cover"
+                />
               </button>
             ))}
           </div>

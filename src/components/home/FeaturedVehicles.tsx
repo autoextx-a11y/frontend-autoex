@@ -1,4 +1,3 @@
-
 import { Link } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -7,12 +6,7 @@ import { Price } from "@/components/common/Price";
 import { Reveal } from "@/components/common/Reveal";
 import { Button } from "@/components/ui/button";
 import { fmtNumber } from "@/lib/format";
-import {
-  photoUrl,
-  vehicleName,
-  vehicleDetailsUrl,
-  type VehicleSummary,
-} from "@/lib/vehicle-types";
+import { photoUrl, vehicleName, vehicleDetailsUrl, type VehicleSummary } from "@/lib/vehicle-types";
 
 function FeaturedCard({ v }: { v: VehicleSummary }) {
   const rows = [
@@ -44,17 +38,12 @@ function FeaturedCard({ v }: { v: VehicleSummary }) {
       </Link>
 
       <div className="flex flex-1 flex-col px-2 pb-3 pt-3">
-        <Link
-          to={detailsUrl as "/inventory/$make/$model/$vin"}
-          className="text-center"
-        >
+        <Link to={detailsUrl as "/inventory/$make/$model/$vin"} className="text-center">
           <h3 className="font-display text-lg font-semibold leading-tight text-ink transition-colors group-hover:text-primary">
             {vehicleName(v)}
           </h3>
 
-          <p className="min-h-5 text-xs text-muted-foreground">
-            {v.trim}
-          </p>
+          <p className="min-h-5 text-xs text-muted-foreground">{v.trim}</p>
         </Link>
 
         <div className="mx-2 mt-2 grid grid-cols-2 bg-primary py-1.5 text-center text-primary-foreground">
@@ -73,33 +62,22 @@ function FeaturedCard({ v }: { v: VehicleSummary }) {
 
         <dl className="mt-3 flex-1 px-2 text-[11px]">
           {rows.map(([k, val]) => (
-            <div
-              key={k}
-              className="flex justify-between gap-3 border-b border-border/70 py-2"
-            >
+            <div key={k} className="flex justify-between gap-3 border-b border-border/70 py-2">
               <dt>{k}</dt>
-              <dd className="text-right font-semibold">
-                {val || "Coming Soon"}
-              </dd>
+              <dd className="text-right font-semibold">{val || "Coming Soon"}</dd>
             </div>
           ))}
         </dl>
 
         <Button asChild variant="brand" className="mx-2 mt-4 h-10">
-          <Link to={detailsUrl as "/inventory/$make/$model/$vin"}>
-            View Details
-          </Link>
+          <Link to={detailsUrl as "/inventory/$make/$model/$vin"}>View Details</Link>
         </Button>
       </div>
     </article>
   );
 }
 
-export function FeaturedVehicles({
-  vehicles,
-}: {
-  vehicles: VehicleSummary[];
-}) {
+export function FeaturedVehicles({ vehicles }: { vehicles: VehicleSummary[] }) {
   const [emblaRef, embla] = useEmblaCarousel({
     loop: true,
     align: "start",
@@ -126,19 +104,16 @@ export function FeaturedVehicles({
         <Reveal className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-3xl">
             <h2>
-              <span className="block font-sans text-2xl font-normal uppercase">
-                Featured
-              </span>
+              <span className="block font-sans text-2xl font-normal uppercase">Featured</span>
               <span className="block text-[2.5rem] font-extrabold uppercase leading-[0.9] md:text-5xl">
                 Vehicles
               </span>
             </h2>
 
             <p className="mt-3 text-sm leading-relaxed">
-              Explore our featured vehicles, where you’ll find the best deals
-              on the latest models and popular makes. From sleek sedans to
-              powerful trucks, our featured vehicles offer exceptional value
-              and quality that you won’t find anywhere else.
+              Explore our featured vehicles, where you’ll find the best deals on the latest models
+              and popular makes. From sleek sedans to powerful trucks, our featured vehicles offer
+              exceptional value and quality that you won’t find anywhere else.
             </p>
           </div>
 

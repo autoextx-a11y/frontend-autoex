@@ -43,7 +43,11 @@ export function HeroSection({ vehicles }: { vehicles: VehicleSummary[] }) {
 
         {/* Angled orange / charcoal divider */}
         <div className="absolute inset-x-0 -bottom-px z-[1]">
-          <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="block h-[min(8vw,100px)] w-full">
+          <svg
+            viewBox="0 0 1000 100"
+            preserveAspectRatio="none"
+            className="block h-[min(8vw,100px)] w-full"
+          >
             <polygon points="0 0 500 90 1000 0 1000 99 0 99 0 0" className="fill-primary" />
             <polygon points="0 7 500 90 1000 7 1000 100 0 100 0 7" className="fill-ink" />
           </svg>

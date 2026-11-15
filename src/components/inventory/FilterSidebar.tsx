@@ -7,9 +7,26 @@ import { RangeFilter } from "./RangeFilter";
 
 export type SearchPatch = Partial<InventorySearch>;
 
-const BODY_ORDER = ["Convertible", "Coupe", "Hatchback", "Minivan", "Pickup", "SUV", "Sedan", "Wagon"];
+const BODY_ORDER = [
+  "Convertible",
+  "Coupe",
+  "Hatchback",
+  "Minivan",
+  "Pickup",
+  "SUV",
+  "Sedan",
+  "Wagon",
+];
 
-function Section({ title, children, defaultOpen = true }: { title: string; children: ReactNode; defaultOpen?: boolean }) {
+function Section({
+  title,
+  children,
+  defaultOpen = true,
+}: {
+  title: string;
+  children: ReactNode;
+  defaultOpen?: boolean;
+}) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border-b border-border">
@@ -20,9 +37,16 @@ function Section({ title, children, defaultOpen = true }: { title: string; child
         className="flex w-full items-center justify-between px-5 py-4 text-left text-sm transition-colors hover:text-primary"
       >
         {title}
-        <ChevronDown className={cn("size-4 transition-transform duration-300", open && "rotate-180")} />
+        <ChevronDown
+          className={cn("size-4 transition-transform duration-300", open && "rotate-180")}
+        />
       </button>
-      <div className={cn("grid transition-all duration-500", open ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
+      <div
+        className={cn(
+          "grid transition-all duration-500",
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+        )}
+      >
         <div className="min-h-0 overflow-hidden">
           <div className="px-5 pb-4">{children}</div>
         </div>
@@ -46,8 +70,18 @@ function Check({
 }) {
   return (
     <label className="group flex cursor-pointer items-center gap-2.5 py-1 text-sm">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-4 cursor-pointer accent-primary" />
-      {swatch && <span className="size-3.5 shrink-0 border border-border" style={{ background: `var(--swatch-${swatch})` }} />}
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="size-4 cursor-pointer accent-primary"
+      />
+      {swatch && (
+        <span
+          className="size-3.5 shrink-0 border border-border"
+          style={{ background: `var(--swatch-${swatch})` }}
+        />
+      )}
       <span className="transition-colors group-hover:text-primary">
         {label}
         {count != null && <span className="text-muted-foreground"> ({count})</span>}
@@ -66,7 +100,9 @@ function toggle(list: string[] | undefined, value: string, on: boolean) {
 
 function sortedEntries(map: Map<string, number>, order?: string[]) {
   return [...map.entries()].sort((a, b) =>
-    order ? order.indexOf(a[0]) - order.indexOf(b[0]) || a[0].localeCompare(b[0]) : b[1] - a[1] || a[0].localeCompare(b[0]),
+    order
+      ? order.indexOf(a[0]) - order.indexOf(b[0]) || a[0].localeCompare(b[0])
+      : b[1] - a[1] || a[0].localeCompare(b[0]),
   );
 }
 
@@ -82,7 +118,8 @@ export function FilterSidebar({
   onClear: () => void;
 }) {
   const facets = useMemo(() => {
-    const by = (skip: Parameters<typeof filterVehicles>[2]) => filterVehicles(vehicles, search, skip);
+    const by = (skip: Parameters<typeof filterVehicles>[2]) =>
+      filterVehicles(vehicles, search, skip);
     const makeBase = by("make");
     const modelBase = by("model");
     return {
@@ -93,7 +130,9 @@ export function FilterSidebar({
       body: countBy(by("body"), (v) => v.bodyType),
       ext: countBy(by("ext"), (v) => v.exteriorColor),
       int: countBy(by("int"), (v) => v.interiorColor),
-      prices: by("minPrice").filter((v) => v.price != null).map((v) => v.price as number),
+      prices: by("minPrice")
+        .filter((v) => v.price != null)
+        .map((v) => v.price as number),
       miles: by("minMiles").map((v) => v.mileage ?? 0),
       years: by("minYear").map((v) => v.year),
     };
@@ -121,7 +160,11 @@ export function FilterSidebar({
     <aside className="overflow-hidden border border-border bg-card">
       <div className="flex items-center justify-between bg-primary-deep px-4 py-5 text-primary-foreground">
         <h2 className="font-sans text-lg font-bold">Filter Inventory</h2>
-        <button type="button" onClick={onClear} className="font-bold underline underline-offset-2 transition-opacity hover:opacity-80">
+        <button
+          type="button"
+          onClick={onClear}
+          className="font-bold underline underline-offset-2 transition-opacity hover:opacity-80"
+        >
           Clear
         </button>
       </div>
@@ -150,7 +193,9 @@ export function FilterSidebar({
               onChange={(c) => {
                 const make = toggle(search.make, m, c);
                 // drop models of makes that were unselected
-                const model = search.model?.filter((x) => (make ?? []).includes(x.split("|")[0] ?? ""));
+                const model = search.model?.filter((x) =>
+                  (make ?? []).includes(x.split("|")[0] ?? ""),
+                );
                 onChange({ make, model: model?.length ? model : undefined });
               }}
             />
@@ -219,7 +264,9 @@ export function FilterSidebar({
             />
           ))}
         </div>
-        <p className="mb-1 mt-4 text-xs font-semibold uppercase text-muted-foreground">Interior Color</p>
+        <p className="mb-1 mt-4 text-xs font-semibold uppercase text-muted-foreground">
+          Interior Color
+        </p>
         <div className="grid grid-cols-2 gap-x-2">
           {sortedEntries(facets.int).map(([k, n]) => (
             <Check

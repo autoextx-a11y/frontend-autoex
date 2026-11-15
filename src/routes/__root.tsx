@@ -55,7 +55,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center bg-background px-4 py-20">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          This page didn't load
+        </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
@@ -89,7 +91,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "AutoEx | Used Cars for Sale in Irving, TX" },
       {
         name: "description",
-        content: "AutoEx in Irving, TX — quality used vehicles, great prices and exceptional service.",
+        content:
+          "AutoEx in Irving, TX — quality used vehicles, great prices and exceptional service.",
       },
       { name: "author", content: "AutoEx" },
       { name: "theme-color", content: "#ff5221" },

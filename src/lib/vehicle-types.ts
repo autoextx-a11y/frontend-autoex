@@ -13,6 +13,7 @@ export type Vehicle = {
   subtitle: string;
   year: number;
   make: string;
+
   model: string;
   trim: string;
   cardTrim?: string;
@@ -83,7 +84,21 @@ const CDN = "https://cdn05.carsforsale.com";
 export type PhotoSize = "480x360" | "800x600" | "1280x960";
 
 export function photoUrl(path: string, size: PhotoSize = "800x600") {
+  // API already provides complete image URLs.
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  // Keep local images unchanged.
+  if (path.startsWith("/")) {
+    return path;
+  }
+
+  // Support the old CarsForSale image paths.
   const slash = path.indexOf("/");
+
+  if (slash === -1) return path;
+
   return `${CDN}/${path.slice(0, slash)}/${size}/${path.slice(slash + 1)}`;
 }
 
@@ -91,10 +106,8 @@ export function vehicleName(v: Pick<Vehicle, "year" | "make" | "model">) {
   return `${v.year} ${v.make} ${v.model}`;
 }
 
-
-
 export function vehicleDetailsUrl(v: VehicleSummary) {
   return `/inventory/${encodeURIComponent(v.make)}/${encodeURIComponent(
     v.model,
-  )}/${encodeURIComponent(v.vin)}`;
+  )}/${encodeURIComponent(v.stock)}`;
 }

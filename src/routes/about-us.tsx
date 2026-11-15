@@ -7,9 +7,15 @@ export const Route = createFileRoute("/about-us")({
   head: () => ({
     meta: [
       { title: "About AutoEx | Used Car Dealer in Irving, TX" },
-      { name: "description", content: "Get to know AutoEx — honest, trustworthy, hassle-free car buying in Irving, TX." },
+      {
+        name: "description",
+        content: "Get to know AutoEx — honest, trustworthy, hassle-free car buying in Irving, TX.",
+      },
       { property: "og:title", content: "Get to Know AutoEx" },
-      { property: "og:description", content: "Honest, trustworthy, hassle-free car buying in Irving, TX." },
+      {
+        property: "og:description",
+        content: "Honest, trustworthy, hassle-free car buying in Irving, TX.",
+      },
       { property: "og:image", content: IMAGES.aboutCar },
       { name: "twitter:image", content: IMAGES.aboutCar },
     ],
@@ -25,14 +31,15 @@ function AboutPage() {
         <Reveal className="space-y-5 text-[1.05rem] leading-relaxed">
           <p>At AutoEx, we take pride in the way we do business.</p>
           <p>
-            We believe that the car-buying process should be an exciting, hassle-free process. When you shop at AutoEx, we strive to work
-            with you to find the vehicle that meets your needs and budget; not our sales goals. We have been working hard in the Irving area
-            to build a reputation for honest, trustworthy sales practices. We’re ready to earn your business and would be proud to earn
-            your recommendation.
+            We believe that the car-buying process should be an exciting, hassle-free process. When
+            you shop at AutoEx, we strive to work with you to find the vehicle that meets your needs
+            and budget; not our sales goals. We have been working hard in the Irving area to build a
+            reputation for honest, trustworthy sales practices. We’re ready to earn your business
+            and would be proud to earn your recommendation.
           </p>
           <p>
-            Stop in today and shop our great inventory, check out our affordable financing options, and see if you’re ready to take home
-            your next vehicle.
+            Stop in today and shop our great inventory, check out our affordable financing options,
+            and see if you’re ready to take home your next vehicle.
           </p>
         </Reveal>
         <Reveal delay={150} className="overflow-hidden">

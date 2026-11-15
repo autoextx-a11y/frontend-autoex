@@ -29,7 +29,8 @@ export function openStatus(date = new Date()) {
   const today = BUSINESS_HOURS[day] ?? BUSINESS_HOURS[0];
   const open = today.open;
   const close = today.close;
-  const isOpen = open != null && close != null && minutes >= toMinutes(open) && minutes < toMinutes(close);
+  const isOpen =
+    open != null && close != null && minutes >= toMinutes(open) && minutes < toMinutes(close);
   return {
     day,
     isOpen,

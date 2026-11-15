@@ -4,7 +4,13 @@ import { dealershipNow } from "@/lib/hours";
 import { cn } from "@/lib/utils";
 
 /** Weekly hours; today's row is bolded once the page is live in the browser. */
-export function BusinessHoursList({ tone = "dark", suffix = " CDT" }: { tone?: "dark" | "light"; suffix?: string }) {
+export function BusinessHoursList({
+  tone = "dark",
+  suffix = " CDT",
+}: {
+  tone?: "dark" | "light";
+  suffix?: string;
+}) {
   const [today, setToday] = useState<number | null>(null);
   useEffect(() => setToday(dealershipNow().day), []);
 

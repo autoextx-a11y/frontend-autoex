@@ -7,11 +7,20 @@ import type { InventorySearch } from "@/lib/inventory-filter";
 
 type Entry = { label: string; count: number; min: number; search: InventorySearch };
 
-function summarize(vehicles: VehicleSummary[], key: (v: VehicleSummary) => string, toSearch: (v: VehicleSummary) => InventorySearch) {
+function summarize(
+  vehicles: VehicleSummary[],
+  key: (v: VehicleSummary) => string,
+  toSearch: (v: VehicleSummary) => InventorySearch,
+) {
   const map = new Map<string, Entry>();
   for (const v of vehicles) {
     const k = key(v);
-    const e = map.get(k) ?? { label: k, count: 0, min: Number.POSITIVE_INFINITY, search: toSearch(v) };
+    const e = map.get(k) ?? {
+      label: k,
+      count: 0,
+      min: Number.POSITIVE_INFINITY,
+      search: toSearch(v),
+    };
     e.count++;
     if (v.price != null) e.min = Math.min(e.min, v.price);
     map.set(k, e);
@@ -45,9 +54,11 @@ function Group({ title, entries }: { title: string; entries: Entry[] }) {
 
 export function PopularLinks({ vehicles }: { vehicles: VehicleSummary[] }) {
   const { makes, models, bodies } = useMemo(() => {
-    const makes = summarize(vehicles, (v) => v.make, (v) => ({ make: [v.make] })).sort((a, b) =>
-      a.label.localeCompare(b.label),
-    );
+    const makes = summarize(
+      vehicles,
+      (v) => v.make,
+      (v) => ({ make: [v.make] }),
+    ).sort((a, b) => a.label.localeCompare(b.label));
     const models = summarize(
       vehicles,
       (v) => `${v.make} ${v.model}`,
@@ -55,9 +66,11 @@ export function PopularLinks({ vehicles }: { vehicles: VehicleSummary[] }) {
     )
       .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
       .slice(0, 15);
-    const bodies = summarize(vehicles, (v) => v.bodyType, (v) => ({ body: [v.bodyType] })).sort(
-      (a, b) => b.count - a.count,
-    );
+    const bodies = summarize(
+      vehicles,
+      (v) => v.bodyType,
+      (v) => ({ body: [v.bodyType] }),
+    ).sort((a, b) => b.count - a.count);
     return { makes, models, bodies };
   }, [vehicles]);
 

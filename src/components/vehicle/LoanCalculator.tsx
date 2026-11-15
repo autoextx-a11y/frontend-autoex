@@ -1,10 +1,28 @@
 import { useMemo, useState } from "react";
-import { CREDIT_TIERS, DEFAULT_CREDIT, DEFAULT_DOWN_RATE, DEFAULT_TERM, TERMS, estimateLoan, type CreditKey } from "@/lib/loan";
+import {
+  CREDIT_TIERS,
+  DEFAULT_CREDIT,
+  DEFAULT_DOWN_RATE,
+  DEFAULT_TERM,
+  TERMS,
+  estimateLoan,
+  type CreditKey,
+} from "@/lib/loan";
 import { LINKS } from "@/config/site";
 import { fmtMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-function MoneyInput({ label, value, onChange, suffix }: { label: string; value: number; onChange: (n: number) => void; suffix?: string }) {
+function MoneyInput({
+  label,
+  value,
+  onChange,
+  suffix,
+}: {
+  label: string;
+  value: number;
+  onChange: (n: number) => void;
+  suffix?: string;
+}) {
   return (
     <label className="block">
       <span className="mb-1.5 block text-sm">{label}</span>
@@ -12,7 +30,16 @@ function MoneyInput({ label, value, onChange, suffix }: { label: string; value: 
         {!suffix && <span>$</span>}
         <input
           inputMode="decimal"
-          value={Number.isFinite(value) ? (suffix ? String(value) : value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })) : ""}
+          value={
+            Number.isFinite(value)
+              ? suffix
+                ? String(value)
+                : value.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+              : ""
+          }
           onChange={(e) => onChange(Number(e.target.value.replace(/[^\d.]/g, "")) || 0)}
           className={cn("min-w-0 bg-transparent outline-none", suffix ? "w-12" : "w-full")}
           aria-label={label}
@@ -33,11 +60,16 @@ export function LoanCalculator({ price, vehicleId }: { price: number | null; veh
   const [apr, setApr] = useState<number>(tier.apr);
   const [term, setTerm] = useState(DEFAULT_TERM);
 
-  const est = useMemo(() => estimateLoan({ price: vehiclePrice, tradeIn, down, apr, months: term }), [vehiclePrice, tradeIn, down, apr, term]);
+  const est = useMemo(
+    () => estimateLoan({ price: vehiclePrice, tradeIn, down, apr, months: term }),
+    [vehiclePrice, tradeIn, down, apr, term],
+  );
 
   return (
     <section className="mt-8">
-      <h2 className="font-sans text-[1.85rem] font-bold leading-tight">Estimate Loan &amp; Payment Calculator</h2>
+      <h2 className="font-sans text-[1.85rem] font-bold leading-tight">
+        Estimate Loan &amp; Payment Calculator
+      </h2>
       <div className="mt-5 grid grid-cols-2 gap-3">
         <MoneyInput label="Vehicle Price" value={vehiclePrice} onChange={setVehiclePrice} />
         <MoneyInput label="Trade-In Value" value={tradeIn} onChange={setTradeIn} />
@@ -49,17 +81,24 @@ export function LoanCalculator({ price, vehicleId }: { price: number | null; veh
         <p className="text-xs">Est. Monthly Payment</p>
         <p key={est.payment} className="animate-fade-in font-sans text-3xl font-bold">
           <sup className="text-sm">$</sup>
-          {est.payment.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          {est.payment.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
           <span className="text-sm font-normal">/mo</span>
         </p>
         <hr className="my-3" />
         <p className="text-xs">Estimated Total Loan Amount</p>
         <p className="text-2xl font-bold">
           <sup className="text-sm">$</sup>
-          {est.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          {est.total.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </p>
         <p className="mt-1 text-xs">
-          After all {term} payments, including {fmtMoney(down, 2)} down and {fmtMoney(tradeIn, 2)} trade-in.
+          After all {term} payments, including {fmtMoney(down, 2)} down and {fmtMoney(tradeIn, 2)}{" "}
+          trade-in.
         </p>
         <p className="mt-3 text-[11px]">
           Estimated finance terms: {apr.toFixed(2)}% APR · {term} months
@@ -119,10 +158,11 @@ export function LoanCalculator({ price, vehicleId }: { price: number | null; veh
         Apply for Financing
       </a>
       <p className="mt-5 text-[11px] leading-relaxed">
-        Disclaimer: This interactive calculator is provided for illustrative purposes only and is not an offer or guarantee of credit. Your
-        actual APR, payment, and total cost depend on your credit history, lender approval, and the final vehicle price. Estimated total loan
-        amount includes your down payment and trade-in value. Figures exclude taxes, title, registration, and dealer fees unless otherwise
-        noted.
+        Disclaimer: This interactive calculator is provided for illustrative purposes only and is
+        not an offer or guarantee of credit. Your actual APR, payment, and total cost depend on your
+        credit history, lender approval, and the final vehicle price. Estimated total loan amount
+        includes your down payment and trade-in value. Figures exclude taxes, title, registration,
+        and dealer fees unless otherwise noted.
       </p>
     </section>
   );

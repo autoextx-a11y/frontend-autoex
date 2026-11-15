@@ -73,7 +73,8 @@ export const FOOTER_LINKS: NavLink[] = [
 
 /** Plain-href paths for buttons that pass a vehicle along. */
 export const LINKS = {
-  loanApplication: (vehicleId?: string) => `/loan-application${vehicleId ? `?vehicleId=${vehicleId}` : ""}`,
+  loanApplication: (vehicleId?: string) =>
+    `/loan-application${vehicleId ? `?vehicleId=${vehicleId}` : ""}`,
   valueYourTrade: "/value-your-trade",
   terms: "/terms-and-conditions",
   sitemap: "/sitemap",
@@ -85,9 +86,12 @@ export const IMAGES = {
     "https://cdn05.carsforsale.com/0090f16daba1e313a944df459865ae3a3c/0090f16daba1e313a944df459865ae3a3c.jpg?format=original&sig=2ee9b8ed876edf34",
   aboutCar:
     "https://cdn05.carsforsale.com/598cb4a7f0b43db5e23a6b6b50503015/598cb4a7f0b43db5e23a6b6b50503015.jpg?width=1920&height=1440&format=&sig=2d79464345c95791",
-  under10k: "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/67B5982300FFD623C3034A9D7676AE28.png",
-  under20k: "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/1CC0E217C96E70AA63529534FE84EA79.png",
-  under30k: "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/7170D9245EB013A5644F0A37639A2AFC.png",
+  under10k:
+    "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/67B5982300FFD623C3034A9D7676AE28.png",
+  under20k:
+    "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/1CC0E217C96E70AA63529534FE84EA79.png",
+  under30k:
+    "https://cdn.powersports.com/cdn-cgi/image/h=240,w=320/7170D9245EB013A5644F0A37639A2AFC.png",
 } as const;
 
 export const PRICE_TIERS = [

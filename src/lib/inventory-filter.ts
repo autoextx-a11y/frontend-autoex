@@ -60,28 +60,93 @@ function inList(values: string[] | undefined, value: string) {
 }
 
 /** Apply every filter except the one named in `skip` (used for facet counts). */
+// export function filterVehicles(
+//   vehicles: VehicleSummary[],
+//   s: InventorySearch,
+//   skip?: Facet,
+// ): VehicleSummary[] {
+//   const q = s.q?.trim().toLowerCase();
+//   return vehicles.filter((v) => {
+//     if (q && !v.stock.toLowerCase().includes(q) && !v.vin.toLowerCase().includes(q)) return false;
+//     if (skip !== "condition" && !inList(s.condition, v.condition)) return false;
+//     if (skip !== "make" && !inList(s.make, v.make)) return false;
+//     if (skip !== "model" && !inList(s.model, `${v.make}|${v.model}`)) return false;
+//     if (skip !== "body" && !inList(s.body, v.bodyType)) return false;
+//     if (skip !== "ext" && !inList(s.ext, v.exteriorColor)) return false;
+//     if (skip !== "int" && !inList(s.int, v.interiorColor)) return false;
+//     const price = v.price ?? 0;
+//     if (s.minPrice != null && price < s.minPrice) return false;
+//     if (s.maxPrice != null && price > s.maxPrice) return false;
+//     const miles = v.mileage ?? 0;
+//     if (s.minMiles != null && miles < s.minMiles) return false;
+//     if (s.maxMiles != null && miles > s.maxMiles) return false;
+//     if (s.minYear != null && v.year < s.minYear) return false;
+//     if (s.maxYear != null && v.year > s.maxYear) return false;
+//     return true;
+//   });
+// }
+
+/**
+ * Normalize search values:
+ * - Ignore uppercase/lowercase differences.
+ * - Ignore spaces.
+ * - Ignore hyphens.
+ */
+function normalizeSearch(value: string | number | null | undefined): string {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[\s-]+/g, "");
+}
+
+/** Apply every filter except the one named in `skip`. */
 export function filterVehicles(
   vehicles: VehicleSummary[],
   s: InventorySearch,
   skip?: Facet,
 ): VehicleSummary[] {
-  const q = s.q?.trim().toLowerCase();
+  const q = normalizeSearch(s.q?.trim());
+
+  //   console.log("Full search object:", s);
+  // console.log("Search query:", q);
+
+  //   console.log("Search query:", q);
+  // console.log(
+  //   "Vehicle years:",
+  //   vehicles.slice(0, 10).map((v) => v.year)
+  // );
+
   return vehicles.filter((v) => {
-    if (q && !v.stock.toLowerCase().includes(q) && !v.vin.toLowerCase().includes(q)) return false;
+    // Search across Trim, Year, Make, Model, Stock and VIN.
+    if (q) {
+      const searchableFields = [v.trim, v.year, v.make, v.model, v.stock, v.vin];
+
+      // const matches = searchableFields.some((field) =>
+      //   normalizeSearch(field).includes(q),
+      // );
+      const matches = searchableFields.some((field) =>
+        normalizeSearch(String(field ?? "")).includes(q),
+      );
+      if (!matches) return false;
+    }
+
     if (skip !== "condition" && !inList(s.condition, v.condition)) return false;
     if (skip !== "make" && !inList(s.make, v.make)) return false;
     if (skip !== "model" && !inList(s.model, `${v.make}|${v.model}`)) return false;
     if (skip !== "body" && !inList(s.body, v.bodyType)) return false;
     if (skip !== "ext" && !inList(s.ext, v.exteriorColor)) return false;
     if (skip !== "int" && !inList(s.int, v.interiorColor)) return false;
+
     const price = v.price ?? 0;
     if (s.minPrice != null && price < s.minPrice) return false;
     if (s.maxPrice != null && price > s.maxPrice) return false;
+
     const miles = v.mileage ?? 0;
     if (s.minMiles != null && miles < s.minMiles) return false;
     if (s.maxMiles != null && miles > s.maxMiles) return false;
+
     if (s.minYear != null && v.year < s.minYear) return false;
     if (s.maxYear != null && v.year > s.maxYear) return false;
+
     return true;
   });
 }
@@ -150,8 +215,17 @@ export function histogram(values: number[], min: number, max: number, buckets = 
 
 export function activeFilterCount(s: InventorySearch) {
   let n = 0;
-  for (const k of ["condition", "make", "model", "body", "ext", "int"] as const) n += s[k]?.length ?? 0;
-  for (const k of ["minPrice", "maxPrice", "minMiles", "maxMiles", "minYear", "maxYear", "q"] as const)
+  for (const k of ["condition", "make", "model", "body", "ext", "int"] as const)
+    n += s[k]?.length ?? 0;
+  for (const k of [
+    "minPrice",
+    "maxPrice",
+    "minMiles",
+    "maxMiles",
+    "minYear",
+    "maxYear",
+    "q",
+  ] as const)
     if (s[k] != null && s[k] !== "") n++;
   return n;
 }

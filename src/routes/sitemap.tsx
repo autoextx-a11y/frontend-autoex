@@ -39,7 +39,11 @@ function SitemapPage() {
         <ul className="bullet-list grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
           {cars.map((v) => (
             <li key={v.id}>
-              <Link to="/inventory/details/$vehicleId" params={{ vehicleId: v.id }} className="text-primary hover:underline">
+              <Link
+                to="/inventory/details/$vehicleId"
+                params={{ vehicleId: v.id }}
+                className="text-primary hover:underline"
+              >
                 {vehicleName(v)} {v.trim}
               </Link>
             </li>

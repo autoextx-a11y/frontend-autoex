@@ -1,4 +1,3 @@
-
 // Content sections of the car details page (left column).
 import { Fuel } from "lucide-react";
 import { CarfaxBadge } from "@/components/common/CarfaxBadge";
@@ -11,20 +10,19 @@ import { cn } from "@/lib/utils";
 import { SectionTitle, ShowMore } from "./Collapsible";
 
 export function VehicleInfo({ v }: { v: Vehicle }) {
-  // Display only information available from the API.
   const rows = [
     { label: "Year", value: v.year },
     { label: "Make", value: v.make },
     { label: "Model", value: v.model },
     { label: "Trim", value: v.trim },
     { label: "Engine", value: v.engine },
+    { label: "Drive Train", value: v.drivetrain },
     { label: "Transmission", value: v.transmission },
-    { label: "Drivetrain", value: v.drivetrain },
+    { label: "Stock", value: v.stock },
     { label: "Fuel", value: v.fuel },
     { label: "Exterior Color", value: v.exteriorColor },
     { label: "Interior Color", value: v.interiorColor },
     { label: "Body Style", value: v.bodyType },
-    { label: "VIN", value: v.vin },
   ].filter((r) => r.value != null && String(r.value).trim() !== "");
 
   return (
@@ -221,9 +219,7 @@ export function SafetyEquipment({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-10">
       <SectionTitle>Safety Equipment</SectionTitle>
-      {v.safetyEquipment.length > 0 && (
-        <ThreeColList items={v.safetyEquipment} />
-      )}
+      {v.safetyEquipment.length > 0 && <ThreeColList items={v.safetyEquipment} />}
     </Reveal>
   );
 }

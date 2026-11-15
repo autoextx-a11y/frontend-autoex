@@ -44,7 +44,9 @@ export function BetterWay() {
       <div className="bg-parallax h-[300px] pt-12 text-center text-ink-foreground">
         <Reveal className="px-4">
           <h3 className="text-2xl font-bold uppercase">Better Way To Find Your Car</h3>
-          <p className="mt-2 text-sm">At AutoEx, we make car buying easy with our clearly marked lowest price right up front.</p>
+          <p className="mt-2 text-sm">
+            At AutoEx, we make car buying easy with our clearly marked lowest price right up front.
+          </p>
         </Reveal>
       </div>
       <div className="container-site mb-12 mt-5 md:-mt-[150px]">

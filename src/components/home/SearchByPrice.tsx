@@ -10,7 +10,9 @@ export function SearchByPrice() {
           <h2 className="text-[2rem] font-bold uppercase leading-none">
             Search by <span className="block text-[2.5rem] font-bold text-primary">Price</span>
           </h2>
-          <p className="mt-3 leading-relaxed">Find your ideal car within your budget! Begin shopping today!</p>
+          <p className="mt-3 leading-relaxed">
+            Find your ideal car within your budget! Begin shopping today!
+          </p>
         </Reveal>
         <div className="grid gap-6 sm:grid-cols-3 lg:col-span-10">
           {PRICE_TIERS.map((t, i) => (

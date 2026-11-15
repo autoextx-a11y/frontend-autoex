@@ -20,7 +20,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "AutoEx | Used Cars for Sale in Irving, TX" },
       {
         property: "og:description",
-        content: "Quality Vehicles. Great Prices. Exceptional Service. Browse the AutoEx inventory in Irving, TX.",
+        content:
+          "Quality Vehicles. Great Prices. Exceptional Service. Browse the AutoEx inventory in Irving, TX.",
       },
     ],
   }),
@@ -30,14 +31,14 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { data: vehicles } = useSuspenseQuery(inventoryQuery());
-  const featured = useMemo(
-    () =>
-      vehicles
-        .filter((v) => v.featured)
-        .sort((a, b) => (a.featuredRank ?? 0) - (b.featuredRank ?? 0)),
-    [vehicles],
-  );
-
+  // const featured = useMemo(
+  //   () =>
+  //     vehicles
+  //       .filter((v) => v.featured)
+  //       .sort((a, b) => (a.featuredRank ?? 0) - (b.featuredRank ?? 0)),
+  //   [vehicles],
+  // );
+  const featured = useMemo(() => vehicles, [vehicles]);
   return (
     <>
       <HeroSection vehicles={vehicles} />

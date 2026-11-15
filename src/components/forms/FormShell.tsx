@@ -20,12 +20,19 @@ export function FormShell({
     <form onSubmit={onSubmit} className="animate-fade-up">
       {children}
       <div className="mt-8 flex justify-center">
-        <Button type="submit" variant="brand" className="h-12 w-40 text-base" disabled={status === "sending"}>
+        <Button
+          type="submit"
+          variant="brand"
+          className="h-12 w-40 text-base"
+          disabled={status === "sending"}
+        >
           {status === "sending" ? "Sending..." : submitLabel}
         </Button>
       </div>
       {status === "sent" && (
-        <p className="animate-fade-in mt-4 text-center font-semibold text-primary">Thanks! Your form has been sent.</p>
+        <p className="animate-fade-in mt-4 text-center font-semibold text-primary">
+          Thanks! Your form has been sent.
+        </p>
       )}
       {consent && <ConsentNote className="mt-4 text-center" />}
     </form>

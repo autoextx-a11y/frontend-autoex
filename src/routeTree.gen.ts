@@ -18,7 +18,7 @@ import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 import { Route as ValueYourTradeRouteImport } from './routes/value-your-trade'
 import { Route as InventoryIndexRouteImport } from './routes/inventory.index'
-import { Route as InventoryMakeModelVinRouteImport } from './routes/inventory.$make.$model.$vin'
+import { Route as InventoryMakeModelStockRouteImport } from './routes/inventory.$make.$model.$stock'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -65,9 +65,9 @@ const InventoryIndexRoute = InventoryIndexRouteImport.update({
   path: '/inventory/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InventoryMakeModelVinRoute = InventoryMakeModelVinRouteImport.update({
-  id: '/inventory/$make/$model/$vin',
-  path: '/inventory/$make/$model/$vin',
+const InventoryMakeModelStockRoute = InventoryMakeModelStockRouteImport.update({
+  id: '/inventory/$make/$model/$stock',
+  path: '/inventory/$make/$model/$stock',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -81,7 +81,7 @@ export interface FileRoutesByFullPath {
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
   '/inventory/': typeof InventoryIndexRoute
-  '/inventory/$make/$model/$vin': typeof InventoryMakeModelVinRoute
+  '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,7 +93,7 @@ export interface FileRoutesByTo {
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
   '/inventory': typeof InventoryIndexRoute
-  '/inventory/$make/$model/$vin': typeof InventoryMakeModelVinRoute
+  '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,7 +106,7 @@ export interface FileRoutesById {
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
   '/inventory/': typeof InventoryIndexRoute
-  '/inventory/$make/$model/$vin': typeof InventoryMakeModelVinRoute
+  '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,7 +120,7 @@ export interface FileRouteTypes {
     | '/terms-and-conditions'
     | '/value-your-trade'
     | '/inventory/'
-    | '/inventory/$make/$model/$vin'
+    | '/inventory/$make/$model/$stock'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -132,7 +132,7 @@ export interface FileRouteTypes {
     | '/terms-and-conditions'
     | '/value-your-trade'
     | '/inventory'
-    | '/inventory/$make/$model/$vin'
+    | '/inventory/$make/$model/$stock'
   id:
     | '__root__'
     | '/'
@@ -144,7 +144,7 @@ export interface FileRouteTypes {
     | '/terms-and-conditions'
     | '/value-your-trade'
     | '/inventory/'
-    | '/inventory/$make/$model/$vin'
+    | '/inventory/$make/$model/$stock'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,7 +157,7 @@ export interface RootRouteChildren {
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   ValueYourTradeRoute: typeof ValueYourTradeRoute
   InventoryIndexRoute: typeof InventoryIndexRoute
-  InventoryMakeModelVinRoute: typeof InventoryMakeModelVinRoute
+  InventoryMakeModelStockRoute: typeof InventoryMakeModelStockRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -225,11 +225,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InventoryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/inventory/$make/$model/$vin': {
-      id: '/inventory/$make/$model/$vin'
-      path: '/inventory/$make/$model/$vin'
-      fullPath: '/inventory/$make/$model/$vin'
-      preLoaderRoute: typeof InventoryMakeModelVinRouteImport
+    '/inventory/$make/$model/$stock': {
+      id: '/inventory/$make/$model/$stock'
+      path: '/inventory/$make/$model/$stock'
+      fullPath: '/inventory/$make/$model/$stock'
+      preLoaderRoute: typeof InventoryMakeModelStockRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -245,7 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsAndConditionsRoute: TermsAndConditionsRoute,
   ValueYourTradeRoute: ValueYourTradeRoute,
   InventoryIndexRoute: InventoryIndexRoute,
-  InventoryMakeModelVinRoute: InventoryMakeModelVinRoute,
+  InventoryMakeModelStockRoute: InventoryMakeModelStockRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

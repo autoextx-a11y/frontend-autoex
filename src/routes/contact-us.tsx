@@ -12,7 +12,11 @@ export const Route = createFileRoute("/contact-us")({
   head: () => ({
     meta: [
       { title: "Contact AutoEx | Irving, TX Car Dealer" },
-      { name: "description", content: "Contact AutoEx at 1425 N LOOP 12, Irving, TX 75061. Call (214) 764-9566 or send us a message." },
+      {
+        name: "description",
+        content:
+          "Contact AutoEx at 1425 N LOOP 12, Irving, TX 75061. Call (214) 764-9566 or send us a message.",
+      },
       { property: "og:title", content: "Contact AutoEx" },
       { property: "og:description", content: "Call, email or visit AutoEx in Irving, TX." },
     ],
@@ -42,14 +46,34 @@ function ContactPage() {
             <div className="grid gap-x-2 gap-y-5 sm:grid-cols-2">
               <TextField name="firstName" label="First Name" required className="[&_input]:h-14" />
               <TextField name="lastName" label="Last Name" required className="[&_input]:h-14" />
-              <TextField name="email" type="email" label="Email" required className="[&_input]:h-14" />
-              <TextField name="phone" label="Phone" required placeholder="(___) ___-____" maxLength={14} onInput={maskPhone} className="[&_input]:h-14" />
-              <TextArea name="comments" label="Comments" className="sm:col-span-2 [&_textarea]:min-h-[170px]" />
+              <TextField
+                name="email"
+                type="email"
+                label="Email"
+                required
+                className="[&_input]:h-14"
+              />
+              <TextField
+                name="phone"
+                label="Phone"
+                required
+                placeholder="(___) ___-____"
+                maxLength={14}
+                onInput={maskPhone}
+                className="[&_input]:h-14"
+              />
+              <TextArea
+                name="comments"
+                label="Comments"
+                className="sm:col-span-2 [&_textarea]:min-h-[170px]"
+              />
             </div>
           </FormShell>
         </div>
         <Reveal>
-          <h2 className="mb-6 w-fit border-b-2 border-ink pb-2 font-display text-lg font-bold uppercase">AutoEx</h2>
+          <h2 className="mb-6 w-fit border-b-2 border-ink pb-2 font-display text-lg font-bold uppercase">
+            AutoEx
+          </h2>
           <div className="space-y-5">
             <IconRow icon={<MapPin className="size-4" />}>
               <p>{SITE.address.street}</p>
@@ -68,7 +92,9 @@ function ContactPage() {
               </a>
             </IconRow>
           </div>
-          <h2 className="mb-2 mt-10 w-fit border-b-2 border-ink pb-2 font-display text-lg font-bold uppercase">Hours</h2>
+          <h2 className="mb-2 mt-10 w-fit border-b-2 border-ink pb-2 font-display text-lg font-bold uppercase">
+            Hours
+          </h2>
           <ul>
             {BUSINESS_HOURS.map((h) => (
               <li key={h.day} className="flex justify-between border-b border-border py-2.5">

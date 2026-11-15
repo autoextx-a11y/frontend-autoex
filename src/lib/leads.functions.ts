@@ -15,7 +15,10 @@ const leadSchema = z.object({
   ]),
   vehicleId: z.string().max(64).optional(),
   fields: z
-    .record(z.string().max(80), z.union([z.string().max(5000), z.array(z.string().max(200)).max(100), z.boolean()]))
+    .record(
+      z.string().max(80),
+      z.union([z.string().max(5000), z.array(z.string().max(200)).max(100), z.boolean()]),
+    )
     .refine((f) => Object.keys(f).length <= 300, "Too many fields"),
 });
 

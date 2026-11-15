@@ -25,13 +25,20 @@ export function ShowMore({ children, height = 300 }: { children: ReactNode; heig
     <div>
       <div
         ref={ref}
-        className={cn("overflow-hidden transition-[max-height] duration-700 ease-in-out", needed && !open && "fade-bottom")}
+        className={cn(
+          "overflow-hidden transition-[max-height] duration-700 ease-in-out",
+          needed && !open && "fade-bottom",
+        )}
         style={{ maxHeight: needed ? (open ? full : height) : undefined }}
       >
         {children}
       </div>
       {needed && (
-        <button type="button" onClick={() => setOpen((o) => !o)} className="mt-2 font-bold text-primary transition-colors hover:text-primary-deep">
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          className="mt-2 font-bold text-primary transition-colors hover:text-primary-deep"
+        >
           {open ? "Show Less" : "Show More"}
         </button>
       )}

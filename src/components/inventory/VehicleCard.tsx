@@ -1,15 +1,10 @@
-
 import { Link } from "@tanstack/react-router";
 import { CarfaxBadge } from "@/components/common/CarfaxBadge";
 import { Price } from "@/components/common/Price";
 import { Button } from "@/components/ui/button";
 import { LINKS, SITE } from "@/config/site";
 import { fmtNumber } from "@/lib/format";
-import {
-  vehicleName,
-  vehicleDetailsUrl,
-  type VehicleSummary,
-} from "@/lib/vehicle-types";
+import { vehicleName, vehicleDetailsUrl, type VehicleSummary } from "@/lib/vehicle-types";
 import { CardGallery } from "./CardGallery";
 import { PriceBreakdown } from "./PriceBreakdown";
 
@@ -57,10 +52,7 @@ export function VehicleCard({
 
         <ul className="mt-3 flex-1 text-sm">
           {rows.map(([k, val]) => (
-            <li
-              key={k}
-              className="flex justify-between gap-4 border-b border-border py-2.5"
-            >
+            <li key={k} className="flex justify-between gap-4 border-b border-border py-2.5">
               <span>{k}:</span>
               <span className="text-right font-bold">{val}</span>
             </li>

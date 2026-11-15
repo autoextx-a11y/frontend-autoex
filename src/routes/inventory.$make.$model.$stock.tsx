@@ -1,11 +1,12 @@
-
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+
 import { Price } from "@/components/common/Price";
 import { PriceBreakdown } from "@/components/inventory/PriceBreakdown";
 import { PhotoGallery } from "@/components/vehicle/PhotoGallery";
 import { VdpHeader } from "@/components/vehicle/VdpHeader";
 import { VehicleSidebar } from "@/components/vehicle/VehicleSidebar";
+
 import {
   Awards,
   CrashRatings,
@@ -18,16 +19,15 @@ import {
   StandardSpecs,
   VehicleInfo,
 } from "@/components/vehicle/VehicleSections";
+
 import { fmtMoney, fmtNumber } from "@/lib/format";
-import { vehicleByVinQuery } from "@/lib/inventory.functions";
+import { vehicleByStockQuery } from "@/lib/inventory.functions";
 import { photoUrl, vehicleName } from "@/lib/vehicle-types";
 
-export const Route = createFileRoute(
-  "/inventory/$make/$model/$vin",
-)({
+export const Route = createFileRoute("/inventory/$make/$model/$stock")({
   loader: async ({ context, params }) => {
     const v = await context.queryClient
-      .ensureQueryData(vehicleByVinQuery(params.vin))
+      .ensureQueryData(vehicleByStockQuery(params.stock))
       .catch(() => null);
 
     if (
@@ -44,24 +44,19 @@ export const Route = createFileRoute(
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [
-          { title: "Vehicle Unavailable | AutoEx" },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: "Vehicle Unavailable | AutoEx" }, { name: "robots", content: "noindex" }],
       };
     }
 
     const v = loaderData;
+
     const title = `${vehicleName(v)} ${v.subtitle} for sale in Irving, TX | AutoEx`;
 
     const desc = `${vehicleName(v)} ${v.trim} — ${fmtMoney(v.price)}${
       v.mileage != null ? `, ${fmtNumber(v.mileage)} miles` : ""
     }, ${v.exteriorColor}. Available at AutoEx in Irving, TX.`;
 
-    const img =
-      v.photos[0] && !v.comingSoon
-        ? photoUrl(v.photos[0], "1280x960")
-        : null;
+    const img = v.photos[0] && !v.comingSoon ? photoUrl(v.photos[0], "1280x960") : null;
 
     return {
       meta: [
@@ -82,12 +77,12 @@ export const Route = createFileRoute(
 
   notFoundComponent: () => (
     <div className="container-site py-24 text-center">
-      <h1 className="text-3xl font-bold">
-        This vehicle is no longer available
-      </h1>
+      <h1 className="text-3xl font-bold">This vehicle is no longer available</h1>
+
       <p className="mt-2 text-muted-foreground">
         It may have been sold. Browse the rest of our inventory below.
       </p>
+
       <Link
         to="/inventory"
         className="mt-6 inline-block rounded-[3px] bg-primary px-5 py-2.5 font-semibold text-primary-foreground hover:bg-primary-deep"
@@ -101,8 +96,10 @@ export const Route = createFileRoute(
 });
 
 function VehicleDetailsPage() {
-  const { vin } = Route.useParams();
-  const { data: v } = useSuspenseQuery(vehicleByVinQuery(vin));
+  const { stock } = Route.useParams();
+
+  const { data: v } = useSuspenseQuery(vehicleByStockQuery(stock));
+
   const name = vehicleName(v);
 
   return (
@@ -113,31 +110,22 @@ function VehicleDetailsPage() {
         <div className="grid gap-10 lg:grid-cols-[1fr_minmax(320px,440px)]">
           <div className="min-w-0 pt-0">
             <div className="lg:-mt-px">
-              <PhotoGallery
-                photos={v.photos}
-                alt={`${name} for sale in Irving, TX`}
-              />
+              <PhotoGallery photos={v.photos} alt={`${name} for sale in Irving, TX`} />
             </div>
 
             <div className="mt-3 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
               <div className="animate-fade-up">
-                <h2 className="font-display text-3xl font-bold leading-tight">
-                  {name}
-                </h2>
-                <p className="font-display text-xl font-bold uppercase">
-                  {v.subtitle}
-                </p>
+                <h2 className="font-display text-3xl font-bold leading-tight">{name}</h2>
+
+                <p className="font-display text-xl font-bold uppercase">{v.subtitle}</p>
               </div>
 
               <div className="animate-fade-up text-left [animation-delay:150ms] sm:text-right">
                 <p className="text-sm font-bold">Price</p>
-                <Price
-                  value={v.price}
-                  className="text-[2.1rem] font-bold leading-none"
-                />
-                {v.mileage != null && (
-                  <p className="mt-2">{fmtNumber(v.mileage)} miles</p>
-                )}
+
+                <Price value={v.price} className="text-[2.1rem] font-bold leading-none" />
+
+                {v.mileage != null && <p className="mt-2">{fmtNumber(v.mileage)} miles</p>}
               </div>
             </div>
 
@@ -145,6 +133,7 @@ function VehicleDetailsPage() {
 
             <div className="mt-10 grid gap-12 md:grid-cols-2">
               <VehicleInfo v={v} />
+
               <div>
                 <Description v={v} />
                 <Features v={v} />

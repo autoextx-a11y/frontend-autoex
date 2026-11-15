@@ -1,4 +1,3 @@
-
 // Server-only access to dealership inventory.
 import localData from "@/data/vehicles.json";
 
@@ -13,9 +12,7 @@ const LOCAL_VEHICLES = localData as unknown as Vehicle[];
 
 // Find a matching local vehicle using its VIN.
 function findLocalVehicle(vin: string): Vehicle | undefined {
-  return LOCAL_VEHICLES.find(
-    (vehicle) => vehicle.vin?.toLowerCase() === vin.toLowerCase(),
-  );
+  return LOCAL_VEHICLES.find((vehicle) => vehicle.vin?.toLowerCase() === vin.toLowerCase());
 }
 
 // Combine API data with local additional information.
@@ -26,8 +23,8 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
   return {
     ...localVehicle,
     ...apiVehicle,
-    
-        // Preserve featured and ranking information from local JSON.
+
+    // Preserve featured and ranking information from local JSON.
     featured: localVehicle?.featured ?? false,
     featuredRank: localVehicle?.featuredRank ?? null,
     rank: localVehicle?.rank ?? 0,
@@ -43,9 +40,9 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
     trim: car.trim ?? "",
     price: car.price,
 
-    engine: car.engine ?? "",
+    engine: apiVehicle.engine,
     transmission: car.transmission ?? "",
-    drivetrain: car.driveTrain ?? "",
+    drivetrain: apiVehicle.drivetrain,
     bodyType: car.bodyStyle ?? "",
     exteriorColor: car.exteriorColor ?? "",
     interiorColor: car.interiorColor ?? "",
@@ -53,13 +50,13 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
     carfaxUrl: car.carfaxUrl,
 
     // Keep the coming-soon image for every API vehicle.
-    photos: ["/placeholder.svg"],
-    comingSoon: true,
+    // Use API photos and details.
+    photos: apiVehicle.photos,
+    comingSoon: apiVehicle.comingSoon,
 
-    // These details are not supplied by the API.
-    mileage: null,
-    stock: "",
-    condition: "",
+    mileage: apiVehicle.mileage,
+    stock: apiVehicle.stock,
+    condition: apiVehicle.condition,
 
     // Preserve the local subtitle only if one exists.
     subtitle: car.trim ?? "",
@@ -68,26 +65,36 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
 
 // Get all vehicles from the API.
 export async function allVehicles(): Promise<Vehicle[]> {
-  const { data } = await fetchCars({ limit: 50 });
+  const firstPage = await fetchCars({
+    page: 1,
+    limit: 50,
+  });
 
-  return data.map(mergeApiVehicle);
+  const totalPages = firstPage.pagination.totalPages;
+
+  const remainingPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, index) =>
+      fetchCars({
+        page: index + 2,
+        limit: firstPage.pagination.limit,
+      }),
+    ),
+  );
+
+  const allCars = [...firstPage.data, ...remainingPages.flatMap((page) => page.data)];
+
+  return allCars.map(mergeApiVehicle);
 }
 
 // NEW: Find one vehicle using its VIN.
-export async function findVehicleByVin(
-  vin: string,
-): Promise<Vehicle | undefined> {
+export async function findVehicleByVin(vin: string): Promise<Vehicle | undefined> {
   const vehicles = await allVehicles();
 
-  return vehicles.find(
-    (vehicle) => vehicle.vin.toLowerCase() === vin.toLowerCase(),
-  );
+  return vehicles.find((vehicle) => vehicle.vin.toLowerCase() === vin.toLowerCase());
 }
 
 // Get one vehicle from the API using its numeric ID.
-export async function findVehicle(
-  id: string,
-): Promise<Vehicle | undefined> {
+export async function findVehicle(id: string): Promise<Vehicle | undefined> {
   const car = await fetchCarById(id);
 
   if (!car) return undefined;
@@ -124,4 +131,12 @@ export function toSummary(v: Vehicle): VehicleSummary {
     transmission: v.card?.transmission || v.transmission,
     drivetrain: v.card?.drivetrain || v.drivetrain,
   };
+}
+
+export async function findVehicleByStock(stock: string): Promise<Vehicle | undefined> {
+  const vehicles = await allVehicles();
+
+  return vehicles.find(
+    (vehicle) => vehicle.stock?.trim().toLowerCase() === stock.trim().toLowerCase(),
+  );
 }

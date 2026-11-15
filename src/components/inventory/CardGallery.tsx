@@ -1,13 +1,7 @@
-
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import {
-  photoUrl,
-  vehicleName,
-  vehicleDetailsUrl,
-  type VehicleSummary,
-} from "@/lib/vehicle-types";
+import { photoUrl, vehicleName, vehicleDetailsUrl, type VehicleSummary } from "@/lib/vehicle-types";
 import { cn } from "@/lib/utils";
 
 /** Swipeable photo strip on each inventory card. */
@@ -16,8 +10,7 @@ export function CardGallery({ v }: { v: VehicleSummary }) {
   const photos = v.photos?.length ? v.photos : ["/placeholder.svg"];
   const many = photos.length > 1;
 
-  const go = (d: number) =>
-    setIdx((i) => (i + d + photos.length) % photos.length);
+  const go = (d: number) => setIdx((i) => (i + d + photos.length) % photos.length);
 
   // Local images must not be sent through the CarsForSale CDN helper.
   const getPhotoSrc = (path: string) => {
@@ -30,10 +23,7 @@ export function CardGallery({ v }: { v: VehicleSummary }) {
 
   return (
     <div className="group/gal relative overflow-hidden bg-muted">
-      <Link
-        to={vehicleDetailsUrl(v)}
-        className="block aspect-[4/3]"
-      >
+      <Link to={vehicleDetailsUrl(v)} className="block aspect-[4/3]">
         <div
           className="flex h-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${idx * 100}%)` }}
@@ -81,9 +71,7 @@ export function CardGallery({ v }: { v: VehicleSummary }) {
                 onClick={() => setIdx(i)}
                 className={cn(
                   "size-1.5 rounded-full transition-all duration-300",
-                  i === idx
-                    ? "w-4 bg-primary"
-                    : "bg-highlight/70 hover:bg-primary",
+                  i === idx ? "w-4 bg-primary" : "bg-highlight/70 hover:bg-primary",
                 )}
               />
             ))}

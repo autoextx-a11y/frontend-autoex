@@ -15,7 +15,18 @@ type Props = {
 };
 
 /** Dual-thumb range slider with a live histogram of matching vehicles. */
-export function RangeFilter({ label, min, max, step, values, low, high, prefix = "", plain = false, onCommit }: Props) {
+export function RangeFilter({
+  label,
+  min,
+  max,
+  step,
+  values,
+  low,
+  high,
+  prefix = "",
+  plain = false,
+  onCommit,
+}: Props) {
   const show = (n: number) => `${prefix}${plain ? String(n) : n.toLocaleString("en-US")}`;
   const [lo, setLo] = useState(low ?? min);
   const [hi, setHi] = useState(high ?? max);
@@ -63,7 +74,11 @@ export function RangeFilter({ label, min, max, step, values, low, high, prefix =
           return (
             <div
               key={i}
-              className={inRange ? "flex-1 bg-primary/70 transition-all duration-500" : "flex-1 bg-border transition-all duration-500"}
+              className={
+                inRange
+                  ? "flex-1 bg-primary/70 transition-all duration-500"
+                  : "flex-1 bg-border transition-all duration-500"
+              }
               style={{ height: `${(b / peak) * 100}%`, minHeight: b ? 3 : 0 }}
             />
           );

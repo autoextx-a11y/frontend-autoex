@@ -35,11 +35,17 @@ export function VdpHeader({ v }: { v: Vehicle }) {
     <section className="border-b border-border pb-9 pt-3 shadow-[0_6px_10px_-8px_oklch(0_0_0/0.25)]">
       <div className="container-site lg:max-w-[1500px] lg:px-12 2xl:px-[10.5rem]">
         <nav aria-label="Breadcrumb" className="mb-3 text-sm">
-          <Link to="/" className="hover:text-primary">Home</Link>
+          <Link to="/" className="hover:text-primary">
+            Home
+          </Link>
           <span className="px-2 text-muted-foreground">/</span>
-          <Link to="/inventory" className="hover:text-primary">Inventory</Link>
+          <Link to="/inventory" className="hover:text-primary">
+            Inventory
+          </Link>
           <span className="px-2 text-muted-foreground">/</span>
-          <Link to="/inventory" search={{ make: [v.make] }} className="hover:text-primary">{v.make}</Link>
+          <Link to="/inventory" search={{ make: [v.make] }} className="hover:text-primary">
+            {v.make}
+          </Link>
           <span className="px-2 text-muted-foreground">/</span>
           <span>{v.model}</span>
         </nav>
@@ -52,13 +58,29 @@ export function VdpHeader({ v }: { v: Vehicle }) {
             <OpenBadge />
             <div className="flex items-center gap-3 text-xs">
               SHARE:
-              <a aria-label="Share on Facebook" target="_blank" rel="noreferrer" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(share)}`} className="transition-colors hover:text-primary">
+              <a
+                aria-label="Share on Facebook"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(share)}`}
+                className="transition-colors hover:text-primary"
+              >
                 <FacebookIcon />
               </a>
-              <a aria-label="Share on X" target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(share)}&text=${encodeURIComponent(name)}`} className="transition-colors hover:text-primary">
+              <a
+                aria-label="Share on X"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(share)}&text=${encodeURIComponent(name)}`}
+                className="transition-colors hover:text-primary"
+              >
                 <XIcon />
               </a>
-              <a aria-label="Share by email" href={`mailto:?subject=${encodeURIComponent(name)}&body=${encodeURIComponent(share)}`} className="transition-colors hover:text-primary">
+              <a
+                aria-label="Share by email"
+                href={`mailto:?subject=${encodeURIComponent(name)}&body=${encodeURIComponent(share)}`}
+                className="transition-colors hover:text-primary"
+              >
                 <Mail className="size-4" />
               </a>
               <button

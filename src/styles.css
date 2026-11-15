@@ -217,7 +217,8 @@
 @utility bg-card-dark {
   background-color: var(--ink-soft);
   background-image:
-    linear-gradient(180deg, var(--ink-soft), var(--ink-soft), oklch(0.252 0 0 / 0.33)), var(--img-pattern);
+    linear-gradient(180deg, var(--ink-soft), var(--ink-soft), oklch(0.252 0 0 / 0.33)),
+    var(--img-pattern);
   background-size: contain;
 }
 

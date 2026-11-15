@@ -2,7 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Upload } from "lucide-react";
 import { useState } from "react";
 import { PageTitle } from "@/components/common/PageTitle";
-import { CheckGroup, FormSection, maskPhone, RadioGroup, SelectField, TextArea, TextField } from "@/components/forms/Fields";
+import {
+  CheckGroup,
+  FormSection,
+  maskPhone,
+  RadioGroup,
+  SelectField,
+  TextArea,
+  TextField,
+} from "@/components/forms/Fields";
 import { FormShell } from "@/components/forms/FormShell";
 import { useLeadSubmit } from "@/components/forms/useLeadSubmit";
 import {
@@ -24,9 +32,16 @@ export const Route = createFileRoute("/value-your-trade")({
   head: () => ({
     meta: [
       { title: "Value My Trade | AutoEx in Irving, TX" },
-      { name: "description", content: "Tell us about your trade-in and AutoEx will provide an estimated value. Irving, TX." },
+      {
+        name: "description",
+        content:
+          "Tell us about your trade-in and AutoEx will provide an estimated value. Irving, TX.",
+      },
       { property: "og:title", content: "Trade-In Offer at AutoEx" },
-      { property: "og:description", content: "Get an estimated value for your trade-in at AutoEx in Irving, TX." },
+      {
+        property: "og:description",
+        content: "Get an estimated value for your trade-in at AutoEx in Irving, TX.",
+      },
     ],
   }),
   component: TradePage,
@@ -55,7 +70,12 @@ function PhotoDrop({ label }: { label: string }) {
           <Upload className="size-3" /> Upload
         </span>
         <span className="text-muted-foreground">{name || "or Drag and Drop a File"}</span>
-        <input type="file" accept="image/*" className="sr-only" onChange={(e) => setName(e.target.files?.[0]?.name ?? "")} />
+        <input
+          type="file"
+          accept="image/*"
+          className="sr-only"
+          onChange={(e) => setName(e.target.files?.[0]?.name ?? "")}
+        />
       </label>
     </div>
   );
@@ -69,7 +89,9 @@ function TradePage() {
       <div className="container-site pb-20 pt-6">
         <h2 className="text-xl font-bold">Value My Trade | AutoEx in Irving, TX</h2>
         <h2 className="mt-8 text-xl font-bold">Value My Trade-In</h2>
-        <p className="mb-6 text-sm">Tell us about your trade-in, and we will provide an estimated value.</p>
+        <p className="mb-6 text-sm">
+          Tell us about your trade-in, and we will provide an estimated value.
+        </p>
 
         <FormShell onSubmit={onSubmit} status={status}>
           <FormSection title="Contact Info">
@@ -77,7 +99,14 @@ function TradePage() {
               <TextField name="firstName" label="First Name" required />
               <TextField name="lastName" label="Last Name" required />
               <TextField name="email" type="email" label="Email" required />
-              <TextField name="phone" label="Phone" required placeholder="(___) ___-____" maxLength={14} onInput={maskPhone} />
+              <TextField
+                name="phone"
+                label="Phone"
+                required
+                placeholder="(___) ___-____"
+                maxLength={14}
+                onInput={maskPhone}
+              />
             </div>
           </FormSection>
 
@@ -105,35 +134,111 @@ function TradePage() {
 
           <FormSection title="Features">
             <div className="grid items-end gap-6 sm:grid-cols-3">
-              <CheckGroup title="Safety Features" name="safetyFeatures" items={TRADE_FEATURES.safety} />
-              <CheckGroup title="Exterior Features" name="exteriorFeatures" items={TRADE_FEATURES.exterior} />
-              <CheckGroup title="Basic Features" name="basicFeatures" items={TRADE_FEATURES.basic} />
-              <CheckGroup title="Interior Features" name="interiorFeatures" items={TRADE_FEATURES.interior} />
-              <CheckGroup title="Infotainment" name="infotainment" items={TRADE_FEATURES.infotainment} />
+              <CheckGroup
+                title="Safety Features"
+                name="safetyFeatures"
+                items={TRADE_FEATURES.safety}
+              />
+              <CheckGroup
+                title="Exterior Features"
+                name="exteriorFeatures"
+                items={TRADE_FEATURES.exterior}
+              />
+              <CheckGroup
+                title="Basic Features"
+                name="basicFeatures"
+                items={TRADE_FEATURES.basic}
+              />
+              <CheckGroup
+                title="Interior Features"
+                name="interiorFeatures"
+                items={TRADE_FEATURES.interior}
+              />
+              <CheckGroup
+                title="Infotainment"
+                name="infotainment"
+                items={TRADE_FEATURES.infotainment}
+              />
             </div>
             <TextArea name="additionalFeatures" label="Additional Features" className="mt-5" />
           </FormSection>
 
           <FormSection title="Ownership & Condition">
             <div className="grid gap-6 sm:grid-cols-2">
-              <RadioGroup label="Do you own this vehicle?" name="ownership" items={["Owned", "Loan", "Lease"]} />
-              <TextField name="amountOwed" label="How much do you owe on this vehicle?" placeholder="$" />
-              <RadioGroup label="Did you purchase this vehicle new?" name="boughtNew" items={["Yes", "No"]} />
-              <RadioGroup label="Does your vehicle have a salvage or junk title?" name="salvageTitle" items={["Yes", "No"]} />
-              <CheckGroup title="Does your vehicle have any of the issues below?" subtitle="" name="exteriorIssues" items={EXTERIOR_ISSUES} />
-              <TextArea name="exteriorDamage" label="Exterior Damage Summary — share details about any vehicle damage to the exterior" />
-              <CheckGroup title="Does your vehicle have any of the issues below?" subtitle="" name="interiorIssues" items={INTERIOR_ISSUES} />
-              <TextArea name="interiorDamage" label="Interior Damage Summary — share details about any vehicle damage to the interior" />
+              <RadioGroup
+                label="Do you own this vehicle?"
+                name="ownership"
+                items={["Owned", "Loan", "Lease"]}
+              />
+              <TextField
+                name="amountOwed"
+                label="How much do you owe on this vehicle?"
+                placeholder="$"
+              />
+              <RadioGroup
+                label="Did you purchase this vehicle new?"
+                name="boughtNew"
+                items={["Yes", "No"]}
+              />
+              <RadioGroup
+                label="Does your vehicle have a salvage or junk title?"
+                name="salvageTitle"
+                items={["Yes", "No"]}
+              />
+              <CheckGroup
+                title="Does your vehicle have any of the issues below?"
+                subtitle=""
+                name="exteriorIssues"
+                items={EXTERIOR_ISSUES}
+              />
+              <TextArea
+                name="exteriorDamage"
+                label="Exterior Damage Summary — share details about any vehicle damage to the exterior"
+              />
+              <CheckGroup
+                title="Does your vehicle have any of the issues below?"
+                subtitle=""
+                name="interiorIssues"
+                items={INTERIOR_ISSUES}
+              />
+              <TextArea
+                name="interiorDamage"
+                label="Interior Damage Summary — share details about any vehicle damage to the interior"
+              />
             </div>
-            <CheckGroup title="Mechanical Checklist" subtitle="Check all that apply" name="mechanical" items={MECHANICAL_CHECKLIST} className="mt-6" />
+            <CheckGroup
+              title="Mechanical Checklist"
+              subtitle="Check all that apply"
+              name="mechanical"
+              items={MECHANICAL_CHECKLIST}
+              className="mt-6"
+            />
             <div className="mt-5 grid gap-6 sm:grid-cols-3">
-              <RadioGroup label="Has the engine ever been replaced?" name="engineReplaced" items={["Yes", "No"]} />
-              <RadioGroup label="Has the transmission ever been replaced?" name="transmissionReplaced" items={["Yes", "No"]} />
-              <TextField name="treadDepth" label="What is the remaining tread depth on the tires? (% Remaining)" inputMode="numeric" />
+              <RadioGroup
+                label="Has the engine ever been replaced?"
+                name="engineReplaced"
+                items={["Yes", "No"]}
+              />
+              <RadioGroup
+                label="Has the transmission ever been replaced?"
+                name="transmissionReplaced"
+                items={["Yes", "No"]}
+              />
+              <TextField
+                name="treadDepth"
+                label="What is the remaining tread depth on the tires? (% Remaining)"
+                inputMode="numeric"
+              />
             </div>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
-              <TextArea name="mechanicalSummary" label="Mechanical Summary — share details about any mechanical issues" />
-              <TextArea name="modificationSummary" label="Modification Summary — share details about any modifications" />
+              <TextArea
+                name="mechanicalSummary"
+                label="Mechanical Summary — share details about any mechanical issues"
+              />
+              <TextArea
+                name="modificationSummary"
+                label="Modification Summary — share details about any modifications"
+              />
             </div>
             <TextArea name="additionalComments" label="Additional Comments" className="mt-5" />
           </FormSection>

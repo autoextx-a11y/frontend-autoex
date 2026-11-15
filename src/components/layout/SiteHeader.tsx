@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+// import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
+import { Menu, X, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IMAGES, NAV_LINKS, SITE } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -26,9 +27,52 @@ function TopBar() {
 }
 
 export function SiteHeader() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navbarSearch, setNavbarSearch] = useState("");
 
+  // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const query = navbarSearch.trim();
+
+  //   if (!query) return;
+
+  //   //// window.location.href = `/inventory/?q=${encodeURIComponent(query)}`;
+  //   window.location.href = `/inventory?q=${encodeURIComponent(query)}`;
+  //   setOpen(false);
+  // };
+
+  //    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const query = navbarSearch.trim();
+
+  //   if (!query) return;
+
+  //   router.history.push(
+  //     `/inventory?q=${encodeURIComponent(query)}`
+  //   );
+
+  //   setOpen(false);
+  // };
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const query = navbarSearch.trim();
+
+    if (!query) return;
+
+    router.navigate({
+      to: "/inventory",
+      search: {
+        q: query,
+      },
+    });
+
+    setOpen(false);
+  };
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -39,14 +83,20 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 shadow-[var(--shadow-header)]">
       <TopBar />
+
       <nav className="bg-primary text-primary-foreground" aria-label="Main">
         <div
           className={cn(
-            "container-site flex items-center justify-between transition-all duration-300",
+            "container-site flex items-center justify-between gap-3 transition-all duration-300",
             scrolled ? "py-1.5" : "py-2.5",
           )}
         >
-          <Link to="/" className="block shrink-0" aria-label="AutoEx home" onClick={() => setOpen(false)}>
+          <Link
+            to="/"
+            className="block shrink-0"
+            aria-label="AutoEx home"
+            onClick={() => setOpen(false)}
+          >
             <img
               src={IMAGES.logo}
               alt="AutoEx"
@@ -59,19 +109,43 @@ export function SiteHeader() {
             />
           </Link>
 
-          <ul className="hidden items-center gap-5 lg:flex xl:gap-6">
+          {/* Desktop navigation */}
+          <ul className="hidden items-center gap-4 lg:flex xl:gap-5">
             {NAV_LINKS.map((l) => {
-              const cls = "nav-underline text-sm font-bold leading-5 transition-opacity hover:opacity-90";
+              const cls =
+                "nav-underline text-sm font-bold leading-5 transition-opacity hover:opacity-90";
+
               return (
                 <li key={l.label}>
                   <Link to={l.to} activeOptions={{ exact: l.to === "/" }} className={cls}>
-                      {l.label}
-                    </Link>
+                    {l.label}
+                  </Link>
                 </li>
               );
             })}
           </ul>
 
+          {/* Desktop search bar - beside Contact Us */}
+          <form onSubmit={handleSearch} className="hidden shrink-0 items-center gap-1 lg:flex">
+            <input
+              type="search"
+              value={navbarSearch}
+              onChange={(e) => setNavbarSearch(e.target.value)}
+              placeholder="Search vehicles..."
+              aria-label="Search vehicles by trim, year, make, model, stock or VIN"
+              className="h-9 w-32 rounded border border-white/30 bg-white px-2 text-sm text-black placeholder:text-gray-500 outline-none focus:ring-2 focus:ring-black xl:w-40"
+            />
+
+            <button
+              type="submit"
+              aria-label="Search inventory"
+              className="grid size-9 place-items-center rounded bg-black text-white transition-colors hover:bg-gray-800"
+            >
+              <Search className="size-4" />
+            </button>
+          </form>
+
+          {/* Mobile menu button */}
           <button
             type="button"
             className="rounded p-2 transition-colors hover:bg-primary-deep lg:hidden"
@@ -83,20 +157,25 @@ export function SiteHeader() {
           </button>
         </div>
 
+        {/* Mobile menu */}
         <div
           className={cn(
             "grid overflow-hidden transition-all duration-500 lg:hidden",
             open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
           )}
         >
-          <ul className="min-h-0 container-site">
-            {NAV_LINKS.map((l, i) => (
-              <li
-                key={l.label}
-                className={cn("border-t border-primary-foreground/20", open && "animate-slide-left")}
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                <Link
+          <div className="min-h-0">
+            <ul className="container-site">
+              {NAV_LINKS.map((l, i) => (
+                <li
+                  key={l.label}
+                  className={cn(
+                    "border-t border-primary-foreground/20",
+                    open && "animate-slide-left",
+                  )}
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
+                  <Link
                     to={l.to}
                     activeOptions={{ exact: l.to === "/" }}
                     activeProps={{ className: "text-ink" }}
@@ -105,9 +184,33 @@ export function SiteHeader() {
                   >
                     {l.label}
                   </Link>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+
+            {/* Mobile search bar */}
+            <form
+              onSubmit={handleSearch}
+              className="container-site flex items-center gap-2 border-t border-primary-foreground/20 py-3"
+            >
+              <input
+                type="search"
+                value={navbarSearch}
+                onChange={(e) => setNavbarSearch(e.target.value)}
+                placeholder="Search vehicles..."
+                aria-label="Search vehicles"
+                className="h-10 min-w-0 flex-1 rounded bg-white px-3 text-sm text-black outline-none"
+              />
+
+              <button
+                type="submit"
+                aria-label="Search inventory"
+                className="grid size-10 shrink-0 place-items-center rounded bg-black text-white hover:bg-gray-800"
+              >
+                <Search className="size-5" />
+              </button>
+            </form>
+          </div>
         </div>
       </nav>
     </header>
