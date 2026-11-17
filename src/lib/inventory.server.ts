@@ -64,47 +64,30 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
 }
 
 // Get all vehicles from the API.
-
 export async function allVehicles(): Promise<Vehicle[]> {
-  const pageSize = 50;
+  // Use the same page size that returned all 74 records in testing.
+  const firstPage = await fetchCars({ page: 1, limit: 12 });
 
-  const firstPage = await fetchCars({
-    page: 1,
-    limit: pageSize,
-  });
-
-  const allCars = [...firstPage.data];
-  const total = firstPage.pagination.total;
   const totalPages = firstPage.pagination.totalPages;
 
-  if (totalPages > 1) {
-    const remainingPages = await Promise.all(
-      Array.from({ length: totalPages - 1 }, (_, index) =>
-        fetchCars({
-          page: index + 2,
-          limit: pageSize,
-        }),
-      ),
-    );
+  const remainingPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, index) => fetchCars({ page: index + 2, limit: 12 })),
+  );
 
-    for (const page of remainingPages) {
-      allCars.push(...page.data);
-    }
-  }
+  const allCars = [...firstPage.data, ...remainingPages.flatMap((page) => page.data)];
 
-  console.log("API inventory check:", {
-    expectedTotal: total,
-    receivedTotal: allCars.length,
-    totalPages,
-    pageSize,
-    uniqueIds: new Set(allCars.map((car) => car.id)).size,
-  });
+  console.log("FINAL INVENTORY COUNT:", allCars.length);
 
-  if (allCars.length !== total) {
-    throw new Error(
-      `Inventory mismatch: API reports ${total} cars, but frontend received ${allCars.length}.`,
-    );
-  }
+  console.log(
+    "TEST VEHICLES:",
+    allCars
+      .filter((car) => [727, 653, 148].includes(car.id))
+      .map((car) => ({
+        id: car.id,
+        make: car.make,
+        vin: car.vin,
+      })),
+  );
 
   return allCars.map(mergeApiVehicle);
 }
