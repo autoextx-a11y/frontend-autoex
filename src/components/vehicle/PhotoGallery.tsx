@@ -3,32 +3,81 @@ import { useCallback, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { photoUrl } from "@/lib/vehicle-types";
 import { cn } from "@/lib/utils";
+import { ComingSoonImage } from "./ComingSoonImage";
 
 /** Main photo + 4 thumbnails grid; any photo opens a full-screen lightbox. */
 export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string }) {
   const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
-  const count = photos.length;
+  const [failedPhotos, setFailedPhotos] = useState<Set<string>>(() => new Set());
+
+  // Reset failed images when the vehicle's photos change.
+  useEffect(() => {
+    setFailedPhotos(new Set());
+    setIdx(0);
+    setOpen(false);
+  }, [photos]);
+
+  // Only display photos that have not failed to load.
+  const validPhotos = photos.filter((p) => p && p.trim().length > 0 && !failedPhotos.has(p));
+
+  const count = validPhotos.length;
   const extra = count - 5;
+
+  const markPhotoFailed = (photo: string) => {
+    setFailedPhotos((current) => {
+      const next = new Set(current);
+      next.add(photo);
+      return next;
+    });
+  };
 
   const show = (i: number) => {
     setIdx(i);
     setOpen(true);
   };
-  const go = useCallback((d: number) => setIdx((i) => (i + d + count) % count), [count]);
+
+  const go = useCallback(
+    (d: number) => {
+      if (count === 0) return;
+      setIdx((i) => (i + d + count) % count);
+    },
+    [count],
+  );
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || count === 0) return;
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, go]);
+  }, [open, go, count]);
 
-  const main = photos[0];
-  const thumbs = photos.slice(1, 5);
+  // Keep the selected index within the available photos.
+  useEffect(() => {
+    if (count === 0) {
+      setOpen(false);
+      setIdx(0);
+    } else if (idx >= count) {
+      setIdx(count - 1);
+    }
+  }, [count, idx]);
+
+  const main = validPhotos[0];
+  const thumbs = validPhotos.slice(1, 5);
+
+  // No photos available: show the Coming Soon placeholder.
+  if (count === 0) {
+    return (
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
+        <ComingSoonImage />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -37,7 +86,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
           <button
             type="button"
             onClick={() => show(0)}
-            className="group relative block overflow-hidden bg-muted"
+            className="group relative block aspect-[4/3] w-full overflow-hidden bg-muted"
             aria-label="Open photo gallery"
           >
             <img
@@ -45,14 +94,17 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
               alt={alt}
               width={960}
               height={720}
-              className="animate-fade-in aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              onError={() => markPhotoFailed(main)}
+              className="animate-fade-in h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </button>
         )}
+
         {thumbs.length > 0 && (
           <div className="grid grid-cols-2 gap-2">
             {thumbs.map((p, i) => {
               const isLast = i === thumbs.length - 1 && extra > 0;
+
               return (
                 <button
                   key={p}
@@ -67,8 +119,10 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
                     width={480}
                     height={360}
                     loading="lazy"
+                    onError={() => markPhotoFailed(p)}
                     className="aspect-[4/3] h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
+
                   {isLast && (
                     <span className="absolute inset-0 grid place-items-center bg-ink/55 font-display text-4xl font-bold text-ink-foreground transition-colors group-hover:bg-ink/35 md:text-5xl">
                       +{extra}
@@ -86,6 +140,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
           <DialogTitle className="sr-only">
             {alt} ({count})
           </DialogTitle>
+
           <div className="flex items-center justify-between px-4 py-3">
             <p className="font-display font-semibold">
               {alt}{" "}
@@ -93,6 +148,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
                 ({idx + 1} / {count})
               </span>
             </p>
+
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -102,15 +158,18 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
               <X className="size-6" />
             </button>
           </div>
+
           <div className="relative">
-            {photos[idx] && (
+            {validPhotos[idx] && (
               <img
-                key={idx}
-                src={photoUrl(photos[idx], "1280x960")}
+                key={validPhotos[idx]}
+                src={photoUrl(validPhotos[idx], "1280x960")}
                 alt={alt}
+                onError={() => markPhotoFailed(validPhotos[idx])}
                 className="animate-fade-in mx-auto max-h-[70vh] w-auto object-contain"
               />
             )}
+
             {count > 1 && (
               <>
                 <button
@@ -121,6 +180,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
                 >
                   <ChevronLeft />
                 </button>
+
                 <button
                   type="button"
                   onClick={() => go(1)}
@@ -132,8 +192,9 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
               </>
             )}
           </div>
+
           <div className="flex gap-2 overflow-x-auto p-3">
-            {photos.map((p, i) => (
+            {validPhotos.map((p, i) => (
               <button
                 key={p}
                 type="button"
@@ -148,6 +209,7 @@ export function PhotoGallery({ photos, alt }: { photos: string[]; alt: string })
                   src={photoUrl(p, "480x360")}
                   alt=""
                   loading="lazy"
+                  onError={() => markPhotoFailed(p)}
                   className="h-16 w-20 object-cover"
                 />
               </button>

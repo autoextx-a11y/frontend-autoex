@@ -17,6 +17,7 @@ import { Route as ShoppingRequestRouteImport } from './routes/shopping-request'
 import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 import { Route as ValueYourTradeRouteImport } from './routes/value-your-trade'
+import { Route as DealerUploadRouteImport } from './routes/dealer.upload'
 import { Route as InventoryIndexRouteImport } from './routes/inventory.index'
 import { Route as InventoryMakeModelStockRouteImport } from './routes/inventory.$make.$model.$stock'
 
@@ -60,6 +61,11 @@ const ValueYourTradeRoute = ValueYourTradeRouteImport.update({
   path: '/value-your-trade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DealerUploadRoute = DealerUploadRouteImport.update({
+  id: '/dealer/upload',
+  path: '/dealer/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryIndexRoute = InventoryIndexRouteImport.update({
   id: '/inventory/',
   path: '/inventory/',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/sitemap': typeof SitemapRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
+  '/dealer/upload': typeof DealerUploadRoute
   '/inventory/': typeof InventoryIndexRoute
   '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/sitemap': typeof SitemapRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
+  '/dealer/upload': typeof DealerUploadRoute
   '/inventory': typeof InventoryIndexRoute
   '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/sitemap': typeof SitemapRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
   '/value-your-trade': typeof ValueYourTradeRoute
+  '/dealer/upload': typeof DealerUploadRoute
   '/inventory/': typeof InventoryIndexRoute
   '/inventory/$make/$model/$stock': typeof InventoryMakeModelStockRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms-and-conditions'
     | '/value-your-trade'
+    | '/dealer/upload'
     | '/inventory/'
     | '/inventory/$make/$model/$stock'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms-and-conditions'
     | '/value-your-trade'
+    | '/dealer/upload'
     | '/inventory'
     | '/inventory/$make/$model/$stock'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/terms-and-conditions'
     | '/value-your-trade'
+    | '/dealer/upload'
     | '/inventory/'
     | '/inventory/$make/$model/$stock'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   SitemapRoute: typeof SitemapRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
   ValueYourTradeRoute: typeof ValueYourTradeRoute
+  DealerUploadRoute: typeof DealerUploadRoute
   InventoryIndexRoute: typeof InventoryIndexRoute
   InventoryMakeModelStockRoute: typeof InventoryMakeModelStockRoute
 }
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ValueYourTradeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dealer/upload': {
+      id: '/dealer/upload'
+      path: '/dealer/upload'
+      fullPath: '/dealer/upload'
+      preLoaderRoute: typeof DealerUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory/': {
       id: '/inventory/'
       path: '/inventory'
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapRoute: SitemapRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
   ValueYourTradeRoute: ValueYourTradeRoute,
+  DealerUploadRoute: DealerUploadRoute,
   InventoryIndexRoute: InventoryIndexRoute,
   InventoryMakeModelStockRoute: InventoryMakeModelStockRoute,
 }

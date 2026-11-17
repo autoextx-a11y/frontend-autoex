@@ -158,7 +158,7 @@ export function EngineSection({ v }: { v: Vehicle }) {
 export function StandardSpecs({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-6">
-      <SectionTitle>Standard Specifications</SectionTitle>
+      {/* <SectionTitle>Standard Specifications</SectionTitle> */}
       {v.standardSpecs.length > 0 && (
         <ShowMore>
           {v.standardSpecs.map((g) => (
@@ -176,7 +176,7 @@ export function StandardSpecs({ v }: { v: Vehicle }) {
 export function CrashRatings({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-6">
-      <SectionTitle>NHTSA Crash Test Ratings</SectionTitle>
+      {/* <SectionTitle>NHTSA Crash Test Ratings</SectionTitle> */}
       {v.crashRatings.length > 0 && (
         <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2 md:grid-cols-3">
           {v.crashRatings.map((r) => (
@@ -194,7 +194,7 @@ export function CrashRatings({ v }: { v: Vehicle }) {
 export function Awards({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-10">
-      <SectionTitle>Awards</SectionTitle>
+      {/* <SectionTitle>Awards</SectionTitle> */}
       {v.awards.length > 0 && (
         <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2 md:grid-cols-3">
           {v.awards.map((a, i) => (
@@ -218,7 +218,7 @@ export function Awards({ v }: { v: Vehicle }) {
 export function SafetyEquipment({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-10">
-      <SectionTitle>Safety Equipment</SectionTitle>
+      {/* <SectionTitle>Safety Equipment</SectionTitle> */}
       {v.safetyEquipment.length > 0 && <ThreeColList items={v.safetyEquipment} />}
     </Reveal>
   );
@@ -227,7 +227,7 @@ export function SafetyEquipment({ v }: { v: Vehicle }) {
 export function GreenScores({ v }: { v: Vehicle }) {
   return (
     <Reveal className="mt-10">
-      <SectionTitle>EPA Green Scores</SectionTitle>
+      {/* <SectionTitle>EPA Green Scores</SectionTitle> */}
       {v.greenScores.length > 0 &&
         v.greenScores.map((g, i) => (
           <div key={`${g.title}-${i}`} className="mb-6">

@@ -1,13 +1,16 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
+
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -132,19 +135,47 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+// function RootComponent() {
+//   const { queryClient } = Route.useRouteContext();
+
+//   return (
+//     <QueryClientProvider client={queryClient}>
+//       <div className="flex min-h-screen flex-col">
+//         <SiteHeader />
+//         <main className="flex-1">
+//           <Outlet />
+//         </main>
+//         <SiteFooter />
+//       </div>
+//       <ScrollTopButton />
+//       <Toaster position="top-center" richColors />
+//     </QueryClientProvider>
+//   );
+// }
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
+  const isDealerUpload = pathname === "/dealer/upload";
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
-        <SiteHeader />
+        {!isDealerUpload && <SiteHeader />}
+
         <main className="flex-1">
           <Outlet />
         </main>
-        <SiteFooter />
+
+        {!isDealerUpload && <SiteFooter />}
       </div>
-      <ScrollTopButton />
+
+      {!isDealerUpload && <ScrollTopButton />}
+
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );

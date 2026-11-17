@@ -1,20 +1,40 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { photoUrl, vehicleName, vehicleDetailsUrl, type VehicleSummary } from "@/lib/vehicle-types";
 import { cn } from "@/lib/utils";
+import { ComingSoonImage } from "@/components/vehicle/ComingSoonImage";
 
 /** Swipeable photo strip on each inventory card. */
 export function CardGallery({ v }: { v: VehicleSummary }) {
   const [idx, setIdx] = useState(0);
-  const photos = v.photos?.length ? v.photos : ["/placeholder.svg"];
+  const [failedPhotos, setFailedPhotos] = useState<Set<string>>(() => new Set());
+
+  // Remove empty photo values.
+  const photos = (v.photos ?? []).filter(
+    (p): p is string => typeof p === "string" && p.trim().length > 0,
+  );
+
+  const photoKey = photos.join("|");
+
+  // Reset gallery state when the vehicle photos change.
+  useEffect(() => {
+    setIdx(0);
+    setFailedPhotos(new Set());
+  }, [photoKey]);
+
+  const allPhotosFailed = photos.length > 0 && photos.every((p) => failedPhotos.has(p));
+
+  const hasPhotos = photos.length > 0 && !allPhotosFailed;
   const many = photos.length > 1;
 
-  const go = (d: number) => setIdx((i) => (i + d + photos.length) % photos.length);
+  const go = (d: number) => {
+    setIdx((i) => (i + d + photos.length) % photos.length);
+  };
 
   // Local images must not be sent through the CarsForSale CDN helper.
   const getPhotoSrc = (path: string) => {
-    if (path.startsWith("/") || path.startsWith("http")) {
+    if (path.startsWith("/") || path.startsWith("http://") || path.startsWith("https://")) {
       return path;
     }
 
@@ -23,26 +43,42 @@ export function CardGallery({ v }: { v: VehicleSummary }) {
 
   return (
     <div className="group/gal relative overflow-hidden bg-muted">
-      <Link to={vehicleDetailsUrl(v)} className="block aspect-[4/3]">
-        <div
-          className="flex h-full transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${idx * 100}%)` }}
-        >
-          {photos.map((p, i) => (
-            <img
-              key={`${p}-${i}`}
-              src={getPhotoSrc(p)}
-              alt={`${vehicleName(v)} for sale in Irving, TX`}
-              width={480}
-              height={360}
-              loading={i === 0 ? "eager" : "lazy"}
-              className="h-full w-full shrink-0 object-cover"
-            />
-          ))}
-        </div>
+      <Link to={vehicleDetailsUrl(v)} className="relative block aspect-[4/3] overflow-hidden">
+        {!hasPhotos ? (
+          <ComingSoonImage />
+        ) : (
+          <div
+            className="flex h-full transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${idx * 100}%)` }}
+          >
+            {photos.map((p, i) => (
+              <div key={`${p}-${i}`} className="relative h-full w-full shrink-0">
+                {failedPhotos.has(p) ? (
+                  <ComingSoonImage />
+                ) : (
+                  <img
+                    src={getPhotoSrc(p)}
+                    alt={`${vehicleName(v)} for sale in Irving, TX`}
+                    width={480}
+                    height={360}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    className="h-full w-full object-cover"
+                    onError={() => {
+                      setFailedPhotos((current) => {
+                        const next = new Set(current);
+                        next.add(p);
+                        return next;
+                      });
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </Link>
 
-      {many && (
+      {hasPhotos && many && (
         <>
           <button
             type="button"

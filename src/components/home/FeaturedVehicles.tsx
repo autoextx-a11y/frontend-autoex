@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { Price } from "@/components/common/Price";
 import { Reveal } from "@/components/common/Reveal";
+import { ComingSoonImage } from "@/components/vehicle/ComingSoonImage";
 import { Button } from "@/components/ui/button";
 import { fmtNumber } from "@/lib/format";
 import { photoUrl, vehicleName, vehicleDetailsUrl, type VehicleSummary } from "@/lib/vehicle-types";
@@ -16,29 +17,35 @@ function FeaturedCard({ v }: { v: VehicleSummary }) {
     ["Ext. Color", v.exteriorColor],
   ] as const;
 
-  const cover = v.photos[0];
+  const cover = v.photos?.find((photo) => typeof photo === "string" && photo.trim().length > 0);
+
+  const [imageFailed, setImageFailed] = useState(false);
+
   const detailsUrl = vehicleDetailsUrl(v);
 
   return (
     <article className="group flex h-full flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)]">
       <Link
-        to={detailsUrl as "/inventory/$make/$model/$vin"}
-        className="block overflow-hidden bg-muted"
+        to={detailsUrl as "/inventory/$make/$model/$stock"}
+        className="relative block aspect-[4/3] overflow-hidden bg-muted"
       >
-        {cover && (
+        {cover && !imageFailed ? (
           <img
             src={photoUrl(cover, "800x600")}
             alt={`${vehicleName(v)} for sale at AutoEx in Irving, TX`}
             width={640}
             height={480}
             loading="lazy"
-            className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            onError={() => setImageFailed(true)}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
+        ) : (
+          <ComingSoonImage />
         )}
       </Link>
 
       <div className="flex flex-1 flex-col px-2 pb-3 pt-3">
-        <Link to={detailsUrl as "/inventory/$make/$model/$vin"} className="text-center">
+        <Link to={detailsUrl as "/inventory/$make/$model/$stock"} className="text-center">
           <h3 className="font-display text-lg font-semibold leading-tight text-ink transition-colors group-hover:text-primary">
             {vehicleName(v)}
           </h3>
@@ -70,7 +77,7 @@ function FeaturedCard({ v }: { v: VehicleSummary }) {
         </dl>
 
         <Button asChild variant="brand" className="mx-2 mt-4 h-10">
-          <Link to={detailsUrl as "/inventory/$make/$model/$vin"}>View Details</Link>
+          <Link to={detailsUrl as "/inventory/$make/$model/$stock"}>View Details</Link>
         </Button>
       </div>
     </article>
