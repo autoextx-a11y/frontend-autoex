@@ -1,4 +1,4 @@
-const API_URL = import.meta.env["VITE_API_URL"] ?? "http://localhost:5000";
+const API_URL = import.meta.env["VITE_API_URL"] ?? "https://shakeela5.sg-host.com";
 
 export type ApiCar = {
   id: number;
@@ -53,7 +53,9 @@ export async function fetchCars(
     if (v !== undefined && v !== "") qs.set(k, String(v));
   });
 
-  const res = await fetch(`${API_URL}/api/cars?${qs.toString()}`);
+  const res = await fetch(`${API_URL}/api/cars?${qs.toString()}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) throw new Error(`Failed to load cars (${res.status})`);
 

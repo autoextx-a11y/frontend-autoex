@@ -1,4 +1,3 @@
-// Server functions that serve inventory data to React pages.
 import { createServerFn } from "@tanstack/react-start";
 import { queryOptions } from "@tanstack/react-query";
 import { notFound } from "@tanstack/react-router";
@@ -7,8 +6,11 @@ import { z } from "zod";
 import { allVehicles, findVehicle, findVehicleByStock, toSummary } from "./inventory.server";
 
 // Get all inventory vehicles.
-export const getInventory = createServerFn({ method: "GET" }).handler(async () => {
+export const getInventory = createServerFn({ method: "POST" }).handler(async () => {
   const vehicles = await allVehicles();
+
+  console.log("Inventory server function returned:", vehicles.length);
+
   return vehicles.map(toSummary);
 });
 
@@ -41,7 +43,7 @@ export const inventoryQuery = () =>
   queryOptions({
     queryKey: ["inventory"],
     queryFn: () => getInventory(),
-    staleTime: 5 * 60_000,
+    staleTime: 0,
   });
 
 // Query one vehicle using its numeric API ID.

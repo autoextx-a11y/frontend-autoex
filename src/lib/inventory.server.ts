@@ -64,24 +64,47 @@ function mergeApiVehicle(car: ApiCar): Vehicle {
 }
 
 // Get all vehicles from the API.
+
 export async function allVehicles(): Promise<Vehicle[]> {
+  const pageSize = 50;
+
   const firstPage = await fetchCars({
     page: 1,
-    limit: 50,
+    limit: pageSize,
   });
 
+  const allCars = [...firstPage.data];
+  const total = firstPage.pagination.total;
   const totalPages = firstPage.pagination.totalPages;
 
-  const remainingPages = await Promise.all(
-    Array.from({ length: totalPages - 1 }, (_, index) =>
-      fetchCars({
-        page: index + 2,
-        limit: firstPage.pagination.limit,
-      }),
-    ),
-  );
+  if (totalPages > 1) {
+    const remainingPages = await Promise.all(
+      Array.from({ length: totalPages - 1 }, (_, index) =>
+        fetchCars({
+          page: index + 2,
+          limit: pageSize,
+        }),
+      ),
+    );
 
-  const allCars = [...firstPage.data, ...remainingPages.flatMap((page) => page.data)];
+    for (const page of remainingPages) {
+      allCars.push(...page.data);
+    }
+  }
+
+  console.log("API inventory check:", {
+    expectedTotal: total,
+    receivedTotal: allCars.length,
+    totalPages,
+    pageSize,
+    uniqueIds: new Set(allCars.map((car) => car.id)).size,
+  });
+
+  if (allCars.length !== total) {
+    throw new Error(
+      `Inventory mismatch: API reports ${total} cars, but frontend received ${allCars.length}.`,
+    );
+  }
 
   return allCars.map(mergeApiVehicle);
 }
