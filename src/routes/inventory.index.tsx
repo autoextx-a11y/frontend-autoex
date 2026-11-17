@@ -61,6 +61,24 @@ function InventoryPage() {
   );
   const pageData = paginate(filtered, search.page ?? 1);
 
+  console.log("INVENTORY DIAGNOSTICS:", {
+    receivedFromServer: vehicles.length,
+    afterFiltering: filtered.length,
+    displayedOnCurrentPage: pageData.items.length,
+    activeSearch: search,
+  });
+
+  console.table(
+    vehicles
+      .filter((v) => ["727", "653", "148"].includes(String(v.id)))
+      .map((v) => ({
+        id: v.id,
+        vin: v.vin,
+        make: v.make,
+        stock: v.stock,
+      })),
+  );
+
   const update = (patch: SearchPatch) =>
     navigate({
       search: (prev) => ({ ...prev, ...patch, page: undefined }),
